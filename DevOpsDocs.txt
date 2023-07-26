@@ -4,12 +4,12 @@ git init
 mkdir -p services/user-management/backend services/user-management/database
 mkdir -p services/news-management/backend services/news-management/database
 mkdir -p services/treatments/backend services/treatments/database
-mkdir -p services/profile-management/backend services/profile-management/database
+mkdir -p services/general-management/backend services/general-management/database
 mkdir -p services/loyalty-program/backend services/loyalty-program/database
 mkdir -p services/promotions/backend services/promotions/database
 mkdir -p services/notification-system/backend services/notification-system/database
 
-mkdir -p frontends/landing-page
+mkdir -p frontends/general-page
 mkdir -p frontends/news-blog
 mkdir -p frontends/admin-panel
 mkdir -p frontends/user-dashboard
@@ -40,8 +40,8 @@ touch services/news-management/database/Dockerfile
 touch services/treatments/backend/Dockerfile
 touch services/treatments/database/Dockerfile
 
-touch services/profile-management/backend/Dockerfile
-touch services/profile-management/database/Dockerfile
+touch services/general-management/backend/Dockerfile
+touch services/general-management/database/Dockerfile
 
 touch services/loyalty-program/backend/Dockerfile
 touch services/loyalty-program/database/Dockerfile
@@ -52,7 +52,7 @@ touch services/promotions/database/Dockerfile
 touch services/notification-system/backend/Dockerfile
 touch services/notification-system/database/Dockerfile
 
-touch frontends/landing-page/Dockerfile
+touch frontends/general-page/Dockerfile
 touch frontends/news-blog/Dockerfile
 touch frontends/admin-panel/Dockerfile
 touch frontends/user-dashboard/Dockerfile
