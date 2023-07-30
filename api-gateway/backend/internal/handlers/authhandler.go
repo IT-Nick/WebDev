@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 	"strings"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"

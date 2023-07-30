@@ -4,6 +4,7 @@ import (
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/middleware"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/handlers"
 	"github.com/gorilla/mux"
+	"log"
 )
 
 func NewRouter(authHandler *handlers.AuthHandler, gatewayHandler *handlers.GatewayHandler, authMiddleware *middleware.AuthMiddleware) *mux.Router {

@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 	"strings"
-
+	"log"
 	"github.com/golang-jwt/jwt"
 )
 
