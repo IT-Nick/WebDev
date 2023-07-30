@@ -10,8 +10,8 @@ func NewRouter(authHandler *handlers.AuthHandler, gatewayHandler *handlers.Gatew
     router := mux.NewRouter()
 
     // Добавляем роуты, которые требуют авторизации
-    router.Handle("/admin/{_:.*}", authMiddleware.CheckAuth(gatewayHandler)).Methods("GET", "POST", "PUT", "DELETE")
-    router.Handle("/user/{_:.*}", authMiddleware.CheckAuth(gatewayHandler)).Methods("GET", "POST", "PUT", "DELETE")
+    router.Handle("/admin/{_:.*}", authMiddleware.CheckAuth(gatewayHandler.ServeHTTP)).Methods("GET", "POST", "PUT", "DELETE")
+    router.Handle("/user/{_:.*}", authMiddleware.CheckAuth(gatewayHandler.ServeHTTP)).Methods("GET", "POST", "PUT", "DELETE")
     // и так далее для других роутов, требующих авторизации...
 
     // Все остальные запросы перенаправляются на обработчик gateway без проверки авторизации
