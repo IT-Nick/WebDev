@@ -9,14 +9,14 @@ services:
     depends_on:
       - nginx
 
-  general-management:
-    build: ./services/general-management/backend
-    ports:
-      - 8080:8080
-    networks:
-      - microservices_network
-    depends_on:
-      - nginx
+  # general-management:
+  #   build: ./services/general-management/backend
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     - microservices_network
+  #   depends_on:
+  #     - nginx
 
   api-gateway:
     build: ./api-gateway/backend
