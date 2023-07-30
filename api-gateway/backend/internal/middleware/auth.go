@@ -3,7 +3,6 @@ package middleware
 import (
 	"net/http"
 	"strings"
-	"github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"
 	"github.com/golang-jwt/jwt"
 )
 
