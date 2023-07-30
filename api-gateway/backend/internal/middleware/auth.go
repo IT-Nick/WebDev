@@ -18,31 +18,38 @@ func NewAuthMiddleware(secretKey string) *AuthMiddleware {
 	}
 }
 
-func (a *AuthMiddleware) CheckAuth(r *http.Request) error {
-	authHeader := r.Header.Get("Authorization")
-	if authHeader == "" {
-		return errors.New("missing Authorization header") // возвращаем ошибку, если заголовок отсутствует
-	}
-
-	bearerToken := strings.Split(authHeader, " ")
-	if len(bearerToken) != 2 {
-		return errors.New("invalid Authorization header") // возвращаем ошибку, если заголовок неверный
-	}
-
-	token, err := jwt.Parse(bearerToken[1], func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, jwt.ErrSignatureInvalid
+func (a *AuthMiddleware) CheckAuth(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" {
+			http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
+			return
 		}
-		return []byte(a.SecretKey), nil
+
+		bearerToken := strings.Split(authHeader, " ")
+		if len(bearerToken) != 2 {
+			http.Error(w, "Invalid Authorization header", http.StatusUnauthorized)
+			return
+		}
+
+		token, err := jwt.Parse(bearerToken[1], func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, jwt.ErrSignatureInvalid
+			}
+			return []byte(a.SecretKey), nil
+		})
+
+		if err != nil {
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		if !token.Valid {
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		// Если проверка токена успешна, то мы вызываем следующий обработчик в цепочке
+		next.ServeHTTP(w, r)
 	})
-
-	if err != nil {
-		return err // возвращаем ошибку, если токен неверный
-	}
-
-	if !token.Valid {
-		return jwt.ErrSignatureInvalid // возвращаем ошибку, если токен недействителен
-	}
-
-	return nil
 }
