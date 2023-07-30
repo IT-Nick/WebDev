@@ -32,6 +32,11 @@ func main() {
 	// Добавляем обработчик метрик Prometheus
 	router.Handle("/metrics", promhttp.Handler())
 
+	// Добавляем обработчики для аутентификации
+	router.HandleFunc("/login", authHandler.Login).Methods("POST")
+	router.HandleFunc("/refresh", authHandler.RefreshToken).Methods("GET")
+
+
 	// Запуск сервера
 	log.Println("Starting server on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router)) // вызывает os.Exit(1), завершая программу
