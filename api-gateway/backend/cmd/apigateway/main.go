@@ -5,7 +5,6 @@
 package main
 
 import (
-	"github.com/IT-Nick/WebDev/api-gateway/backend/cmd/apigateway"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/handlers"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/middleware"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/routing"
