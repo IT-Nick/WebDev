@@ -1,7 +1,9 @@
 package utils
 
-import "log"
-
+import (
+    "log"
+    "os"
+)
 func InitLogger() {
 	// Здесь вы можете настроить ваш логгер. Например:
 	log.SetOutput(os.Stdout)  // Установить вывод на стандартный вывод
