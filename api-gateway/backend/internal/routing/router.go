@@ -4,7 +4,6 @@ import (
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/middleware"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/handlers"
 	"github.com/gorilla/mux"
-	"net/http"
 	"log"
 )
 
