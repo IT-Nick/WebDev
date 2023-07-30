@@ -1,17 +1,20 @@
-//Роутер передает все запросы пользователя на обработчик API Gateway
 package routing
 
 import (
-    "net/http"
-    "github.com/IT-Nick/WebDev/api-gateway/backend/internal/handlers"
-    "github.com/gorilla/mux"
+	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/handlers"
+	"github.com/gorilla/mux"
 )
 
-func NewRouter(gatewayHandler *handlers.GatewayHandler) *mux.Router {
-    router := mux.NewRouter()
+func NewRouter(authHandler *handlers.AuthHandler, gatewayHandler *handlers.GatewayHandler, authMiddleware *middleware.AuthMiddleware) *mux.Router {
+	router := mux.NewRouter()
 
-    // Все запросы перенаправляются на обработчик gateway
-    router.HandleFunc("/{_:.*}", gatewayHandler.HandleRequest).Methods("GET", "POST", "PUT", "DELETE")
+	// Добавляем роуты, которые требуют авторизации
+	router.Handle("/admin/{_:.*}", authMiddleware.CheckAuth(gatewayHandler.HandleRequest)).Methods("GET", "POST", "PUT", "DELETE")
+	router.Handle("/user/{_:.*}", authMiddleware.CheckAuth(gatewayHandler.HandleRequest)).Methods("GET", "POST", "PUT", "DELETE")
+	// и так далее для других роутов, требующих авторизации...
 
-    return router
+	// Все остальные запросы перенаправляются на обработчик gateway без проверки авторизации
+	router.Handle("/{_:.*}", gatewayHandler.HandleRequest).Methods("GET", "POST", "PUT", "DELETE")
+
+	return router
 }

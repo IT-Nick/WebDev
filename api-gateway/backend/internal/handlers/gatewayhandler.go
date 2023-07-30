@@ -7,10 +7,10 @@ import (
 )
 
 type GatewayHandler struct {
-    authMiddleware middleware.AuthMiddleware
+    authMiddleware *middleware.AuthMiddleware
 }
 
-func NewGatewayHandler(authMiddleware middleware.AuthMiddleware) *GatewayHandler {
+func NewGatewayHandler(authMiddleware *middleware.AuthMiddleware) *GatewayHandler {
     return &GatewayHandler{
         authMiddleware: authMiddleware,
     }
