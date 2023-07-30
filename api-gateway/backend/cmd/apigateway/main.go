@@ -9,7 +9,7 @@ import (
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/middleware"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/routing"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/utils"
-	"github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"
+	auth "github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
