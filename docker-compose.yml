@@ -1,0 +1,39 @@
+version: '3'
+services:
+  general-page:
+    build: ./frontends/general-page
+    ports:
+      - 3000:3000
+    networks:
+      - microservices_network
+    depends_on:
+      - nginx
+
+  general-management:
+    build: ./services/general-management/backend
+    ports:
+      - 8080:8080
+    networks:
+      - microservices_network
+    depends_on:
+      - nginx
+
+  api-gateway:
+    build: ./api-gateway/backend
+    ports:
+      - 8081:8081
+    networks:
+      - microservices_network
+    depends_on:
+      - nginx
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    networks:
+      - microservices_network
+
+networks:
+  microservices_network:
+    driver: bridge
