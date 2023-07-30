@@ -1,8 +1,10 @@
 package middleware
 
 import (
+	"errors"
 	"net/http"
 	"strings"
+
 	"github.com/golang-jwt/jwt"
 )
 
@@ -19,12 +21,12 @@ func NewAuthMiddleware(secretKey string) *AuthMiddleware {
 func (a *AuthMiddleware) CheckAuth(r *http.Request) error {
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
-		return http.ErrMissingHeader // возвращаем ошибку, если заголовок отсутствует
+		return errors.New("missing Authorization header") // возвращаем ошибку, если заголовок отсутствует
 	}
 
 	bearerToken := strings.Split(authHeader, " ")
 	if len(bearerToken) != 2 {
-		return http.ErrInvalidHeader // возвращаем ошибку, если заголовок неверный
+		return errors.New("invalid Authorization header") // возвращаем ошибку, если заголовок неверный
 	}
 
 	token, err := jwt.Parse(bearerToken[1], func(token *jwt.Token) (interface{}, error) {
