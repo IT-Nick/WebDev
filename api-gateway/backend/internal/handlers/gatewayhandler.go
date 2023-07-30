@@ -26,6 +26,6 @@ func (gh *GatewayHandler) HandleRequest(w http.ResponseWriter, r *http.Request) 
 	// Выполняем аутентификацию и авторизацию
     gh.authMiddleware.CheckAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Перенаправляем запрос на Nginx
-		http.Redirect(w, r, "http://nginx"+r.RequestURI, http.StatusFound)
+		http.Redirect(w, r, "http://87.242.123.153:80"+r.RequestURI, http.StatusFound)
 	})).ServeHTTP(w, r)
 }
