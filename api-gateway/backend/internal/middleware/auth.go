@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strings"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"
-	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/utils"
 	"github.com/golang-jwt/jwt"
 )
 
@@ -40,7 +39,6 @@ func (a *AuthMiddleware) CheckAuth(next http.Handler) http.Handler {
 		})
 
 		if err != nil {
-			utils.LogError(err)
 			http.Error(w, "Invalid token", http.StatusUnauthorized)
 			return
 		}
