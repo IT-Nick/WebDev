@@ -9,6 +9,7 @@ import (
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/middleware"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/routing"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/utils"
+	"github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
@@ -19,7 +20,7 @@ func main() {
 	utils.InitLogger()
 
 	// Инициализация middleware
-	authMiddleware := middleware.NewAuthMiddleware(string(utils.JwtKey))
+	authMiddleware := middleware.NewAuthMiddleware(string(auth.JwtKey))
 
 	// Инициализация обработчиков
 	authHandler := handlers.NewAuthHandler()
