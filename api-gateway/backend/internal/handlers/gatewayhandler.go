@@ -20,7 +20,9 @@ func (gh *GatewayHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (gh *GatewayHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
-    // Выполняем аутентификацию и авторизацию
+	log.Println("HandleRequest")
+
+	// Выполняем аутентификацию и авторизацию
     gh.authMiddleware.CheckAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Перенаправляем запрос на Nginx
 		http.Redirect(w, r, "http://nginx"+r.RequestURI, http.StatusFound)

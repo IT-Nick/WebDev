@@ -18,6 +18,7 @@ func NewAuthMiddleware(secretKey string) *AuthMiddleware {
 }
 
 func (a *AuthMiddleware) CheckAuth(next http.HandlerFunc) http.Handler {
+	log.Println("CheckAuth")
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {

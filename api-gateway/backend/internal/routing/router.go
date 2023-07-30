@@ -8,6 +8,7 @@ import (
 
 func NewRouter(authHandler *handlers.AuthHandler, gatewayHandler *handlers.GatewayHandler, authMiddleware *middleware.AuthMiddleware) *mux.Router {
     router := mux.NewRouter()
+	log.Println("NewRouter")
 
     // Добавляем роуты, которые требуют авторизации
     router.Handle("/admin/{_:.*}", authMiddleware.CheckAuth(gatewayHandler.ServeHTTP)).Methods("GET", "POST", "PUT", "DELETE")

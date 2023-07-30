@@ -15,6 +15,7 @@ func NewAuthHandler() *AuthHandler {
 func (ah *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	// Здесь была бы логика аутентификации, например проверка имени пользователя и пароля.
 	// Если аутентификация успешна, генерируется JWT.
+	log.Println("Login")
 
 	username := r.FormValue("username")
 	// password := r.FormValue("password")
