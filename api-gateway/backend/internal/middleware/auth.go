@@ -17,7 +17,7 @@ func NewAuthMiddleware(secretKey string) *AuthMiddleware {
 	}
 }
 
-func (a *AuthMiddleware) CheckAuth(next http.Handler) http.Handler {
+func (a *AuthMiddleware) CheckAuth(next http.HandlerFunc) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
@@ -49,6 +49,6 @@ func (a *AuthMiddleware) CheckAuth(next http.Handler) http.Handler {
 		}
 
 		// Если проверка токена успешна, то мы вызываем следующий обработчик в цепочке
-		next.ServeHTTP(w, r)
+		next(w, r)
 	})
 }

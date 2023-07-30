@@ -22,13 +22,8 @@ func (gh *GatewayHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (gh *GatewayHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
     // Выполняем аутентификацию и авторизацию
-    err := gh.authMiddleware.CheckAuth(r)
-    if err != nil {
-        utils.LogError(err)
-        http.Error(w, "Unauthorized", http.StatusUnauthorized)
-        return
-    }
-
-    // Перенаправляем запрос на Nginx
-    http.Redirect(w, r, "http://nginx"+r.RequestURI, http.StatusFound)
+    gh.authMiddleware.CheckAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Перенаправляем запрос на Nginx
+		http.Redirect(w, r, "http://nginx"+r.RequestURI, http.StatusFound)
+	})).ServeHTTP(w, r)
 }
