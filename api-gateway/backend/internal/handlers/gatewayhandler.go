@@ -3,7 +3,6 @@ package handlers
 import (
     "net/http"
     "github.com/IT-Nick/WebDev/api-gateway/backend/internal/middleware"
-    "github.com/IT-Nick/WebDev/api-gateway/backend/internal/utils"
 )
 
 type GatewayHandler struct {
