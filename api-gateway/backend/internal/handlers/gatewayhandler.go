@@ -26,5 +26,5 @@ func (gh *GatewayHandler) HandleRequest(w http.ResponseWriter, r *http.Request) 
     }
 
     // Перенаправляем запрос на Nginx
-    http.Redirect(w, r, "http://nginx_server"+r.RequestURI, http.StatusFound)
+	http.Redirect(w, r, "http://nginx"+r.RequestURI, http.StatusFound)
 }
