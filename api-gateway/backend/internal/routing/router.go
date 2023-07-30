@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func NewRouter(authHandler *handlers.AuthHandler, gatewayHandler *handlers.GatewayHandler, authMiddleware *middleware.AuthMiddleware) *mux.Router {
+func NewRouter(authHandler *handlers.AuthHandler, gatewayHandler *handlers.GatewayHandler, authMiddleware *middleware.AuthMiddleware, redirectHandler *handlers.RedirectHandler) *mux.Router {
     router := mux.NewRouter()
 	log.Println("NewRouter")
 
@@ -18,9 +18,8 @@ func NewRouter(authHandler *handlers.AuthHandler, gatewayHandler *handlers.Gatew
     // и так далее для других роутов, требующих авторизации...
 
     // Все остальные запросы перенаправляются на обработчик gateway без проверки авторизации
-    router.Handle("/{_:.*}", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "http://nginx"+r.RequestURI, http.StatusFound)
-	}).Methods("GET", "POST", "PUT", "DELETE")
+	router.Handle("/{_:.*}", redirectHandler).Methods("GET", "POST", "PUT", "DELETE")
+
 
     return router
 }

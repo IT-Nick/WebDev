@@ -25,9 +25,10 @@ func main() {
 	// Инициализация обработчиков
 	authHandler := handlers.NewAuthHandler()
 	gatewayHandler := handlers.NewGatewayHandler(authMiddleware)
+	redirectHandler := handlers.NewRedirectHandler()
 
 	// Инициализация маршрутов
-	router := routing.NewRouter(authHandler, gatewayHandler, authMiddleware)
+	router := routing.NewRouter(authHandler, gatewayHandler, authMiddleware, redirectHandler)
 
 	// Добавляем обработчик метрик Prometheus
 	router.Handle("/metrics", promhttp.Handler())
