@@ -18,12 +18,12 @@ func main() {
 	// Инициализация логера
 	utils.InitLogger()
 
+	// Инициализация middleware
+	authMiddleware := middleware.NewAuthMiddleware(string(utils.JwtKey))
+
 	// Инициализация обработчиков
 	authHandler := handlers.NewAuthHandler()
-	gatewayHandler := handlers.NewGatewayHandler()
-
-	// Инициализация middleware
-	authMiddleware := middleware.NewAuthMiddleware()
+	gatewayHandler := handlers.NewGatewayHandler(authMiddleware)
 
 	// Инициализация маршрутов
 	router := routing.NewRouter(authHandler, gatewayHandler, authMiddleware)
@@ -35,9 +35,7 @@ func main() {
 	router.HandleFunc("/login", authHandler.Login).Methods("POST")
 	router.HandleFunc("/refresh", authHandler.RefreshToken).Methods("GET")
 
-
 	// Запуск сервера
 	log.Println("Starting server on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router)) // вызывает os.Exit(1), завершая программу
-
 }
