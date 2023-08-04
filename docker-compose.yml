@@ -8,7 +8,23 @@ services:
       - microservices_network
     depends_on:
       - nginx
-
+  #Система авторизации
+  auth:
+    build: ./frontends/auth
+    ports:
+      - 3001:3000
+    networks:
+      - microservices_network
+    depends_on:
+      - nginx
+  auth-system:
+    build: ./services/auth-system/backend
+    ports:
+      - 8080:8080
+    networks:
+      - microservices_network
+    depends_on:
+      - nginx
   # general-management:
   #   build: ./services/general-management/backend
   #   ports:

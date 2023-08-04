@@ -1,63 +1,64 @@
 package handlers
 
 import (
+	"github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"
 	"log"
 	"net/http"
+	"os"
 	"strings"
-	"github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"
 )
 
-type AuthHandler struct {}
+type AuthHandler struct {
+	jwtService auth.JWTService
+}
 
-func NewAuthHandler() *AuthHandler {
-	return &AuthHandler{}
+func NewAuthHandler(jwtService auth.JWTService) *AuthHandler {
+	return &AuthHandler{
+		jwtService: jwtService,
+	}
 }
 
 func (ah *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
-	// Здесь была бы логика аутентификации, например проверка имени пользователя и пароля.
-	// Если аутентификация успешна, генерируется JWT.
 	log.Println("Login")
 
-	username := r.FormValue("username")
-	// password := r.FormValue("password")
-	// валидация логина и пароля здесь
+	secretKey := r.Header.Get("X-Secret-Key")
+	if secretKey != os.Getenv("SECRET_LOGIN_KEY") {
+		http.Error(w, "Unauthorized access", http.StatusUnauthorized)
+		return
+	}
 
-	tokenString, err := utils.GenerateJWT(username)
+	username := r.FormValue("username")
+	role := "admin" //затычка
+	tokenString, err := ah.jwtService.GenerateToken(username, role)
 	if err != nil {
 		http.Error(w, "Error generating token: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Возврат JWT клиенту
 	w.Write([]byte(tokenString))
 }
 
 func (ah *AuthHandler) RefreshToken(w http.ResponseWriter, r *http.Request) {
-	// Получаем токен из заголовка
 	tokenHeader := r.Header.Get("Authorization")
-	
-	// Проверяем наличие префикса Bearer и удаляем его
+
 	if strings.HasPrefix(tokenHeader, "Bearer ") {
 		tokenHeader = strings.TrimPrefix(tokenHeader, "Bearer ")
 	} else {
 		http.Error(w, "Invalid Authorization header", http.StatusUnauthorized)
 		return
 	}
-	
-	// Валидируем токен
-	claims, err := utils.ValidateJWT(tokenHeader)
+
+	claims, err := ah.jwtService.ValidateToken(tokenHeader)
 	if err != nil {
 		http.Error(w, "Invalid token: "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
-	// Генерируем новый токен с теми же утверждениями
-	newToken, err := utils.GenerateJWT(claims.Username)
+	newToken, err := ah.jwtService.GenerateToken(claims.Username, claims.Role)
 	if err != nil {
 		http.Error(w, "Error generating token: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Возвращаем новый токен клиенту
 	w.Write([]byte(newToken))
 }

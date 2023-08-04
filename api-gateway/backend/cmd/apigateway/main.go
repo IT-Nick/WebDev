@@ -9,35 +9,42 @@ import (
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/middleware"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/routing"
 	"github.com/IT-Nick/WebDev/api-gateway/backend/internal/utils"
-	auth "github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/IT-Nick/WebDev/api-gateway/backend/pkg/auth"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
+	// Загрузка переменных окружения из файла .env
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	// Инициализация логера
 	utils.InitLogger()
 
+	// Инициализация JWT сервиса
+	jwtService := auth.NewJWTService(os.Getenv("SECRET_KEY"))
+
 	// Инициализация middleware
-	authMiddleware := middleware.NewAuthMiddleware(string(auth.JwtKey))
+	authMiddleware := middleware.NewAuthMiddleware(jwtService)
 
 	// Инициализация обработчиков
-	authHandler := handlers.NewAuthHandler()
+	authHandler := handlers.NewAuthHandler(jwtService)
 	gatewayHandler := handlers.NewGatewayHandler(authMiddleware)
 	redirectHandler := handlers.NewRedirectHandler()
 
 	// Инициализация маршрутов
 	router := routing.NewRouter(authHandler, gatewayHandler, authMiddleware, redirectHandler)
 
-	// Добавляем обработчик метрик Prometheus
-	router.Handle("/metrics", promhttp.Handler())
-
-	// Добавляем обработчики для аутентификации
-	router.HandleFunc("/login", authHandler.Login).Methods("POST")
-	router.HandleFunc("/refresh", authHandler.RefreshToken).Methods("GET")
-
 	// Запуск сервера
-	log.Println("Starting server on :8080")
-	log.Fatal(http.ListenAndServe(":8080", router)) // вызывает os.Exit(1), завершая программу
+	serverPort := os.Getenv("SERVER_PORT")
+	if serverPort == "" {
+		serverPort = "8080"
+	}
+	log.Printf("Starting server on :%s", serverPort)
+	log.Fatal(http.ListenAndServe(":"+serverPort, router))
 }

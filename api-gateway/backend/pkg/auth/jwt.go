@@ -1,28 +1,43 @@
-package utils
+package auth
 
 import (
 	"github.com/golang-jwt/jwt"
 	"time"
 )
 
-var JwtKey = []byte("your_secret_key")
+type JWTService interface {
+	GenerateToken(username string, role string) (string, error)
+	ValidateToken(tokenStr string) (*Claims, error)
+}
+
+type tokenService struct {
+	secretKey string
+}
 
 type Claims struct {
 	Username string `json:"username"`
+	Role     string `json:"role"`
 	jwt.StandardClaims
 }
 
-func GenerateJWT(username string) (string, error) {
+func NewJWTService(secretKey string) JWTService {
+	return &tokenService{
+		secretKey: secretKey,
+	}
+}
+
+func (s *tokenService) GenerateToken(username string, role string) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
 		Username: username,
+		Role:     role,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(JwtKey)
+	tokenString, err := token.SignedString([]byte(s.secretKey))
 
 	if err != nil {
 		return "", err
@@ -31,11 +46,11 @@ func GenerateJWT(username string) (string, error) {
 	return tokenString, nil
 }
 
-func ValidateJWT(tknStr string) (*Claims, error) {
+func (s *tokenService) ValidateToken(tknStr string) (*Claims, error) {
 	claims := &Claims{}
 
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
-		return JwtKey, nil
+		return []byte(s.secretKey), nil
 	})
 
 	if err != nil {
