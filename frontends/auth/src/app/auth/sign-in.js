@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-export default function Home() {
+export default function signIn() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
