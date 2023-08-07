@@ -46,7 +46,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - 80:80
+      - "81:81"
     networks:
       - microservices_network
 
