@@ -1,18 +1,45 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require("tailwindcss/plugin");
+
 module.exports = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
   ],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        display: ["var(--font-sf)", "system-ui", "sans-serif"],
+        default: ["var(--font-inter)", "system-ui", "sans-serif"],
+      },
+      animation: {
+        // Tooltip
+        "slide-up-fade": "slide-up-fade 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+        "slide-down-fade": "slide-down-fade 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+      },
+      keyframes: {
+        // Tooltip
+        "slide-up-fade": {
+          "0%": { opacity: 0, transform: "translateY(6px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+        "slide-down-fade": {
+          "0%": { opacity: 0, transform: "translateY(-6px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
       },
     },
   },
-  plugins: [],
-}
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/line-clamp"),
+    plugin(({ addVariant }) => {
+      addVariant("radix-side-top", '&[data-side="top"]');
+      addVariant("radix-side-bottom", '&[data-side="bottom"]');
+    }),
+  ],
+};

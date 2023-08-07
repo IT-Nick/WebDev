@@ -1,0 +1,48 @@
+{/*
+<form className="w-full">
+  <div className="flex flex-wrap -mx-3 mb-6">
+    <div className="w-full md:w-1 px-3 mb-6 md:mb-0">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+        ФИО
+      </label>
+      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Иванов Иван Иванович"></input>
+      <p className="text-red-500 text-xs italic">Заполни это поле</p>
+    </div>
+        <div className="w-full md:w-1 px-3 mb-6 md:mb-0">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+        Телефон
+      </label>
+      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="+79876543210"></input>
+      <p className="text-red-500 text-xs italic">Заполни это поле</p>
+    </div>
+        <div className="w-full md:w-1 px-3 mb-6 md:mb-0">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+        Почта
+      </label>
+      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="email@mpei.ru"></input>
+      <p className="text-red-500 text-xs italic">Заполни это поле</p>
+    </div>
+            <div className="w-full md:w-1 px-3 mb-6 md:mb-0">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+        Почему ты хочешь стать частью сборной?
+      </label>
+      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder=""></input>
+    </div>
+  </div>
+  
+  <div className="flex flex-wrap -mx-3 mb-6">
+    <div className="w-full px-3">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+        В каких интеллектуальных мероприятиях ты учавствовал?
+      </label>
+        <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Мероприятия, достижения"></input>
+        <p className="text-gray-600 text-xs italic">В сборую можно попасть только после участия в каком либо интеллектуальном мероприятии</p>
+    </div>
+  </div>
+  <div className="flex flex-wrap -mx-3 mb-2">
+  </div>
+  <p className="text-gray-500 text-xl">Если ты еще не принимал участие в соревнованиях</p>
+  <Footer />
+
+</form>
+/*}
