@@ -8,6 +8,14 @@ services:
       - microservices_network
     depends_on:
       - nginx
+  mini-landings:
+    build: ./frontends/mini-landings
+    ports:
+      - 3002:3000
+    networks:
+      - microservices_network
+    depends_on:
+      - nginx
   #Система авторизации
   auth:
     build: ./frontends/auth
