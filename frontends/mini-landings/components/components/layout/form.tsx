@@ -1,0 +1,89 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+export default function Form({ type }: { type: "login" | "register" }) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        setLoading(true);
+        if (type === "login") {
+        } else {
+          fetch("/api/auth/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: e.currentTarget.email.value,
+              password: e.currentTarget.password.value,
+            }),
+          }).then(async (res) => {
+            setLoading(false);
+          });
+        }
+      }}
+      className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
+    >
+      <div>
+        <label
+          htmlFor="email"
+          className="block text-xs text-gray-600 uppercase"
+        >
+          Почта ОСЭП
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="PlekhanovSM@mpei.ru"
+          autoComplete="email"
+          required
+          className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="password"
+          className="block text-xs text-gray-600 uppercase"
+        >
+          Пароль
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          required
+          className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+        />
+      </div>
+      <button
+        disabled={loading}
+        className={`${
+          loading
+            ? "cursor-not-allowed border-gray-200 bg-gray-100"
+            : "border-black bg-black text-white hover:bg-white hover:text-black"
+        } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
+      >
+      </button>
+      {type === "login" ? (
+        <p className="text-center text-sm text-gray-600">
+          Нету аккаунта?{" "}
+          <Link href="/register" className="font-semibold text-gray-800">
+            Нажми сюда
+          </Link>{" "}
+          и все узнаешь.
+        </p>
+      ) : (
+        <p className="text-center text-sm text-gray-600">
+          Эта форма доступна только администраторам{" "}</p>
+      )}
+    </form>
+  );
+}
