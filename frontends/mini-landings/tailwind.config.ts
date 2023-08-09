@@ -9,6 +9,14 @@ export default {
   ],  presets: [],
   darkMode: 'media', // or 'class'
   theme: {
+    extend: {
+      width: {
+        '800px': '1100px'
+      },
+      height: {
+        '800px': '500px'
+      }
+    },
     accentColor: ({ theme }) => ({
       ...theme('colors'),
       auto: 'auto',
