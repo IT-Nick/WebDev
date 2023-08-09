@@ -21,17 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <Topbar />
-      <main>
-        <HelloSection />
-
-        <section>
-          <div className='w-full'>
-            {children}
-          </div>
-        </section>
-
+      <main className="pt-16 mb-4 md:mb-8 lg:mb-12 px-4 md:px-8 xl:px-12 bg-white relative">
+      {children}
       </main>
+
       </body>
     </html>
   )
