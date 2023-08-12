@@ -18,10 +18,15 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  overflow-x: hidden;
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+.z-50 {
+  z-index: 50;
 }
