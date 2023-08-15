@@ -18,14 +18,14 @@ const FAQAccordion: React.FC = () => {
       <div className="w-full p-1.5">
         <button className="block w-full p-6 border border-gray-200 hover:border-gray-300 rounded-lg transition duration-200" onClick={() => setIsOpen(!isOpen)}>
           <div className="flex justify-between items-center">
-            <h3 className="font-semibold tracking-tight flex-grow">{question}</h3>
+          <h3 className="font-semibold tracking-tight flex-grow text-black">{question}</h3>
             <div>
               <ArrowIcon />
             </div>
           </div>
-          <p className={isOpen ? "mt-6 tracking-tight" : "hidden mt-6 tracking-tight"}>
-            {answer}
-          </p>
+          <p className={isOpen ? "mt-6 tracking-tight text-black" : "hidden mt-6 tracking-tight text-black"}>
+    {answer}
+</p>
         </button>
       </div>
     );
