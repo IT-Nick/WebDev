@@ -16,7 +16,7 @@ const VideoSection: React.FC = () => {
                     aria-label="Watch the video">
                     <Image 
                         className="rounded-3xl shadow-2xl transition-shadow duration-300 ease-in-out" 
-                        src="https://cruip-tutorials.vercel.app/modal-video/modal-video-thumb.jpg" 
+                        src="/assets/videoimage.png" 
                         width={768} 
                         height={432} 
                         alt="Modal video thumbnail" />
@@ -33,7 +33,7 @@ const VideoSection: React.FC = () => {
                             <div className="max-w-5xl mx-auto h-full flex items-center">
                                 <div className="w-full max-h-full rounded-3xl shadow-2xl aspect-video bg-black overflow-hidden" onClick={() => setModalOpen(false)}>
                                     <video width="1920" height="1080" loop controls>
-                                        <source src="https://cruip-tutorials.vercel.app/modal-video/video.mp4" type="video/mp4" />
+                                        <source src="/assets/yaprofi.mp4" type="video/mp4" />
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>

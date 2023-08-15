@@ -49,10 +49,10 @@ const FAQAccordion: React.FC = () => {
             >
               Подробнее тут
             </a>
-            <h2 className="font-heading text-6xl tracking-tighter">Часто задаваемые вопросы</h2>
+            <h2 className="font-heading text-6xl tracking-tighter text-black">Часто задаваемые вопросы</h2>
           </div>
           <div className="w-full md:w-1/2 p-8">
-            <div className="flex flex-wrap -m-1.5">
+            <div className="flex flex-wrap -m-1.5 text-black">
               <FAQItem 
                 question="Как зарегистрироваться для участия в олимпиаде?" 
                 answer="Регистрация на шестой сезон олимпиады была завершена 15 ноября в 23:59 по московскому времени. Регистрация на следующий сезон стартует осенью 2023 года. Оставьте свою почту, чтобы мы напомнили вам о старте регистрации."

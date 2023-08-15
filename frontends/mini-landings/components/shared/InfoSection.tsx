@@ -92,7 +92,14 @@ function InfoSection() {
 
   return (
     <div className="relative w-full h-auto mx-auto p-8">
-      <h2 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900 text-center">Направления олимпиады</h2>
+      <div className="mx-auto max-w-3xl text-center">
+        <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+        Направления олимпиады
+          </h2>
+          <p className="mt-4 text-gray-500 sm:text-xl">
+            Подборка направлений олимпиады для студентов МЭИ
+          </p>
+        </div>
       <Carousel images={images} />
     </div>
   );
