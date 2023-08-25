@@ -1,6 +1,7 @@
 # Устанавливаем зависимости только тогда, когда это нужно
 FROM node:20.5.0-alpine3.18 AS deps
 WORKDIR /app
+RUN npm install -g npm@9.8.1  # Обновление npm
 COPY package*.json ./
 RUN npm ci --only=production
 
