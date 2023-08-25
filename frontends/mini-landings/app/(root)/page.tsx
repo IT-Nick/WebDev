@@ -6,18 +6,23 @@ import Footer from "@/components/shared/Bottombar";
 
 import Stats from "@/components/shared/general/Stats";
 
-
 export default function Home() {
   return (
-      <div className="bg-white">
+      <div className="bg-white data-scroll-container">
         <div className="flex flex-col md:flex-row">
-          
-          <HeroHome />
-          <ImageSwitcher />
+            <HeroHome />
+            <ImageSwitcher />
         </div>
+        <section className="data-scroll-section">
         <Stats />
-        <Features />
-        <Footer />
+        </section>
+        <section className="data-scroll-section">
+          <Features />
+        </section>
+        <section className="data-scroll-section">
+          <Footer />
+        </section>
+
       </div>
   );
 }

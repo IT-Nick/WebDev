@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import Image from "next/image";
 import { useEffect, useRef } from 'react';
 
 const variants = {
@@ -34,7 +34,7 @@ export default function ImageSwitcher() {
         transition={{ duration: 15, repeat: Infinity }}
         variants={variants}
       >
-        <Image src="/image1.svg" layout="responsive" alt="Описание изображения 1" width={500} height={300} className="object-cover" 
+        <Image src="/image1.svg" alt="Описание изображения 1" width={500} height={300} className="object-cover w-full h-auto" 
             onLoad={() => {
               if (imageRef.current) {
                   imageRef.current.style.marginBottom = `-${imageRef.current.offsetHeight}px`;
@@ -49,7 +49,7 @@ export default function ImageSwitcher() {
         ref={imageRef}
         className="w-full transform -translate-y-full"
      >
-        <Image src="/image2.svg" layout="responsive" alt="Описание изображения 2" width={500} height={300} className="object-cover"
+        <Image src="/image2.svg" alt="Описание изображения 2" width={500} height={300} className="object-cover w-full h-auto"
                  onLoad={() => {
                   if (imageRef.current) {
                     imageRef.current.style.marginBottom = `-${imageRef.current.offsetHeight}px`;
