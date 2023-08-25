@@ -15,18 +15,19 @@
     "@types/node": "20.4.8",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
+    "autoprefixer": "^10.4.15",
     "framer-motion": "^10.16.1",
     "next": "13.4.13",
+    "postcss": "^8.4.28",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
+    "tailwindcss": "^3.3.3",
     "tailwindcss-animate": "^1.0.6",
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "@types/react-slick": "^0.23.10",
-    "postcss": "^8.4.28",
-    "tailwindcss": "^3.3.3"
+    "@types/react-slick": "^0.23.10"
   }
 }
