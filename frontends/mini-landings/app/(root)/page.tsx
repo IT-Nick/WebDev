@@ -1,28 +1,86 @@
 "use client";
-import Features from "@/components/shared/general/Features";
-import HeroHome from "@/components/shared/general/HeroHome";
-import ImageSwitcher from "@/components/shared/general/ImageSwitcher";
-import Footer from "@/components/shared/Bottombar";
-
-import Stats from "@/components/shared/general/Stats";
+import { useEffect, useState } from 'react';
+import Loader from '@/components/shared/Loader/Loader'
+import Hero from '@/components/Root/Hero'
+import './Page.css';
+import { useLoading } from '@/components/Providers/LoadingProvider'
 
 export default function Home() {
-  return (
-      <div className="bg-white data-scroll-container">
-        <div className="flex flex-col md:flex-row">
-            <HeroHome />
-            <ImageSwitcher />
-        </div>
-        <section className="data-scroll-section">
-        <Stats />
-        </section>
-        <section className="data-scroll-section">
-          <Features />
-        </section>
-        <section className="data-scroll-section">
-          <Footer />
-        </section>
+  const { loading, setLoading } = useLoading();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+      console.log(loading)
+    }, 2000);
+
+    const handleScroll = () => {
+      const sections = document.querySelectorAll('.data-scroll-section');
+      const container = document.querySelector('.data-scroll-container') as HTMLElement;
+      
+      let firstSectionIsInView = false;
+
+      sections.forEach((section: Element, index: number) => {
+        const rect = (section as HTMLElement).getBoundingClientRect();
+        const sectionMiddle = rect.top + rect.height / 2;
+
+        if (index === 0) {
+          firstSectionIsInView = rect.top <= window.innerHeight && rect.bottom >= 0;
+        }
+
+        if (sectionMiddle >= 0 && sectionMiddle <= window.innerHeight) {
+          switch (index) {
+            case 1:
+            case 2:
+            case 3:
+              container.style.backgroundColor = '#ffeaa7';
+              break;
+            case 4:
+              container.style.backgroundColor = '#a29bfe';
+              break;
+            default:
+              break;
+          }
+          container.style.transition = 'background-color 0.5s';
+        }
+      });
+
+      if (firstSectionIsInView) {
+        container.style.backgroundColor = 'white';
+        container.style.transition = 'background-color 0.5s';
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <>
+      <div className={`loader-container ${loading ? '' : 'fade-out'}`}>
+        <Loader />
       </div>
+      <div className="bg-white data-scroll-container transition-all duration-500 ease-in-out w-full">
+        <section className="data-scroll-section w-full h-screen">
+          <Hero loading={loading} />
+        </section>
+        <section className="data-scroll-section w-full h-screen">
+          <h1>Вторая секция</h1>
+        </section>
+        <section className="data-scroll-section w-full h-screen">
+          <h1>Третья секция</h1>
+        </section>
+        <section className="data-scroll-section w-full h-screen">
+          <h1>Четвертая секция</h1>
+        </section>
+        <section className="data-scroll-section w-full h-screen">
+          <h1>Пятая секция</h1>
+        </section>
+      </div>
+    </>
   );
 }

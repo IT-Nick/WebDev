@@ -1,0 +1,59 @@
+@keyframes slideAndFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hero-title,
+.sub-title {
+  position: absolute;
+  left: 20px;
+  text-align: left;
+  opacity: 0;
+}
+
+.hero-title {
+  top: 30%;
+  font-size: 4rem;
+  font-weight: bold;
+  animation: slideAndFadeIn 2s ease forwards;
+  color: #525375; 
+}
+
+.sub-title {
+  top: 70%;
+  animation: fadeIn 1s ease forwards 0.1s; /* Delay of 3 seconds */
+}
+
+.svg-icon {
+  position: absolute;
+  right: 20px;
+  top: 15%;
+  opacity: 0;
+  animation: fadeInFromRight 1s ease forwards 0.1s; /* Delay of 4 seconds */
+}
