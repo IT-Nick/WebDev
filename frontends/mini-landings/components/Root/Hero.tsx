@@ -34,9 +34,12 @@ export default function Hero({ loading }: HeroProps) {
             </div>
         )}
       {subTitleAnimation && (
-          <span className="sub-title text-rose-400 underline hover:no-underline text-xl font-bold md:text-2xl lg:text-4xl my-2 md:my-0 md:mx-4">
-            Присоединиться
-          </span>
+            <a
+              href="https://team.mpei.ru/events"
+              className="sub-title px-20 py-6 mt-8 text-4xl font-bold text-rose-400 border border-rose-600 hover:bg-rose-600 hover:text-white focus:outline-none focus:ring active:bg-rose-500"
+            >
+              Присоединиться
+            </a>
       )}
       {subTitleAnimation && (
         <div className="svg-icon">

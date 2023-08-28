@@ -1,0 +1,29 @@
+.marquee {
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+  
+  .marquee-content {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: marquee 75s linear infinite;
+  }
+  
+  .marquee-content span {
+    min-width: 300vw; /* увеличьте это значение для улучшения захода за экран */
+  }
+  
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  

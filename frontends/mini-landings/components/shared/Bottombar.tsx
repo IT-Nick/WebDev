@@ -1,6 +1,5 @@
 function Bottombar() {
     return (
-        <footer aria-label="Site Footer" className="bg-white">
   <div className="max-w-3xl text-center px-4 pt-16 pb-8 mx-auto sm:px-6 lg:px-8 lg:pt-24">
     <div className="text-center">
       <h2 className="text-3xl font-extrabold text-gray-900 sm:text-5xl">
@@ -51,7 +50,6 @@ function Bottombar() {
       </nav>
     </div>
   </div>
-</footer>
     )
 }
 

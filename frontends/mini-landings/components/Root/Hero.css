@@ -46,7 +46,7 @@
 }
 
 .sub-title {
-  top: 70%;
+  top: 60%;
   animation: fadeIn 1s ease forwards 0.1s; /* Delay of 3 seconds */
 }
 

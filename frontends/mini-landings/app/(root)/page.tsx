@@ -4,6 +4,9 @@ import Loader from '@/components/shared/Loader/Loader'
 import Hero from '@/components/Root/Hero'
 import './Page.css';
 import { useLoading } from '@/components/Providers/LoadingProvider'
+import Footer from '@/components/Root/Footer' 
+import Stats from '@/components/Root/Stats' 
+import Features from '@/components/Root/Features';
 
 export default function Home() {
   const { loading, setLoading } = useLoading();
@@ -33,10 +36,10 @@ export default function Home() {
             case 1:
             case 2:
             case 3:
-              container.style.backgroundColor = '#ffeaa7';
+              container.style.backgroundColor = '#fedb87';
               break;
             case 4:
-              container.style.backgroundColor = '#a29bfe';
+              container.style.backgroundColor = '#5d5eb1';
               break;
             default:
               break;
@@ -69,17 +72,17 @@ export default function Home() {
           <Hero loading={loading} />
         </section>
         <section className="data-scroll-section w-full h-screen">
-          <h1>Вторая секция</h1>
+          <Stats />
         </section>
         <section className="data-scroll-section w-full h-screen">
-          <h1>Третья секция</h1>
+        <Features />
         </section>
         <section className="data-scroll-section w-full h-screen">
-          <h1>Четвертая секция</h1>
+          <h1></h1>
         </section>
-        <section className="data-scroll-section w-full h-screen">
-          <h1>Пятая секция</h1>
-        </section>
+        <footer className="data-scroll-section w-full h-screen">
+          <Footer />
+        </footer>
       </div>
     </>
   );
