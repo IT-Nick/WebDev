@@ -23,9 +23,9 @@ const SwipeCard: React.FC<Props> = ({ onSwipeLeft, onSwipeRight, content, onClic
     };
 
     const onEnd = () => {
-      if (springProps.x.get() > 150) {
+      if (springProps.x.get() > 50) {
         onSwipeRight();
-      } else if (springProps.x.get() < -150) {
+      } else if (springProps.x.get() < -50) {
         onSwipeLeft();
       }
       setSpring({ x: 0 });
