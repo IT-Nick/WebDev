@@ -14,25 +14,35 @@ const SwipeCard: React.FC<Props> = ({ onSwipeLeft, onSwipeRight, content, onClic
     from: { x: 0 },
   }));
 
-  const bind = {
+  const handleStart = (clientX: number) => {
+    const startX = clientX;
+
+    const onMove = (moveEvent: { clientX: number }) => {
+      const deltaX = moveEvent.clientX - startX;
+      setSpring({ x: deltaX });
+    };
+
+    const onEnd = () => {
+      if (springProps.x.get() > 150) {
+        onSwipeRight();
+      } else if (springProps.x.get() < -150) {
+        onSwipeLeft();
+      }
+      setSpring({ x: 0 });
+    };
+
+    return { onMove, onEnd };
+  };
+
+  const bindMouse = {
     onMouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      const startX = event.clientX;
+      const { onMove, onEnd } = handleStart(event.clientX);
 
-      const onMouseMove = (moveEvent: MouseEvent) => {
-        const deltaX = moveEvent.clientX - startX;
-        setSpring({ x: deltaX });
-      };
-
+      const onMouseMove = (moveEvent: MouseEvent) => onMove({ clientX: moveEvent.clientX });
       const onMouseUp = () => {
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
-
-        if (springProps.x.get() > 150) {
-          onSwipeRight();
-        } else if (springProps.x.get() < -150) {
-          onSwipeLeft();
-        }
-        setSpring({ x: 0 });
+        onEnd();
       };
 
       window.addEventListener('mousemove', onMouseMove);
@@ -40,11 +50,29 @@ const SwipeCard: React.FC<Props> = ({ onSwipeLeft, onSwipeRight, content, onClic
     },
   };
 
+  const bindTouch = {
+    onTouchStart: (event: React.TouchEvent<HTMLDivElement>) => {
+      const { onMove, onEnd } = handleStart(event.touches[0].clientX);
+
+      const onTouchMove = (moveEvent: TouchEvent) => onMove({ clientX: moveEvent.touches[0].clientX });
+      const onTouchEnd = () => {
+        window.removeEventListener('touchmove', onTouchMove);
+        window.removeEventListener('touchend', onTouchEnd);
+        onEnd();
+      };
+
+      window.addEventListener('touchmove', onTouchMove);
+      window.addEventListener('touchend', onTouchEnd);
+    },
+  };
+
   return (
     <animated.div
-      {...bind}
+      {...bindMouse}
+      {...bindTouch}
       style={{
-        transform: springProps.x.to((x) => `translateX(${x}px)`),
+        transform: springProps.x.to((x) => `translate3d(${x}px, 0, 0) rotate(${x / 20}deg)`),
+        opacity: springProps.x.to((x) => Math.max(0.4, 1 - Math.abs(x / 150)))
       }}
       className="bg-white p-4 rounded-lg shadow-md w-5/6 h-5/6 mx-auto my-auto mt-16 relative"
       >
