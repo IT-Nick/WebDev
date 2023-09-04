@@ -1,0 +1,11 @@
+/* Скрываем блок на мобильных устройствах */
+.mobile-hidden {
+  display: none;
+}
+
+/* Показываем блок на десктопах */
+@media (min-width: 768px) {
+  .mobile-hidden {
+    display: block;
+  }
+}

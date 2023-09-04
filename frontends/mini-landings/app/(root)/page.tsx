@@ -80,6 +80,8 @@ export default function Home() {
       <div className={`loader-container ${loading ? '' : 'fade-out'}`}>
         <Loader />
       </div>
+            
+
       <div className="bg-white data-scroll-container transition-all duration-500 ease-in-out w-full">
         <section className="data-scroll-section w-full min-h-screen">
           <Hero loading={loading} />
