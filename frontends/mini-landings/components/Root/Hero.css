@@ -1,3 +1,4 @@
+/* Анимация для заголовка "Создавай будущее" */
 @keyframes slideAndFadeIn {
   0% {
     opacity: 0;
@@ -9,15 +10,7 @@
   }
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
+/* Анимация для изображения, которое выезжает справа */
 @keyframes fadeInFromRight {
   0% {
     opacity: 0;
@@ -29,31 +22,191 @@
   }
 }
 
-.hero-title,
-.sub-title {
-  position: absolute;
-  left: 20px;
-  text-align: left;
+/* Анимация для кнопки, которая появляется из 0 видимости в 100 */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Переливание текста "вместе с нами" */
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Начальные состояния */
+.initial-offscreen {
   opacity: 0;
+  transform: translateY(-100%);
+}
+
+.initial-offscreen-right {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.initial-hidden {
+  opacity: 0;
+}
+
+/* Анимации для React классов */
+.animate-hero-title {
+  animation: slideAndFadeIn 2s ease forwards;
+}
+
+.animate-sub-title-gradient {
+  animation: Gradient 3s ease infinite;
+}
+
+.animate-sub-title {
+  animation: fadeIn 1s ease forwards;
+}
+
+.animate-svg-icon {
+  animation: fadeInFromRight 1s ease forwards;
+}
+
+/* Общие стили для контейнеров и текста */
+.main-container-hero {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.container-hero {
+  flex: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-text-button-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 10px;
 }
 
 .hero-title {
-  top: 30%;
+  margin-top: 100px;
   font-size: 4rem;
   font-weight: bold;
-  animation: slideAndFadeIn 2s ease forwards;
-  color: #525375; 
+  color: #525375;
+}
+
+.sub-title-gradient {
+  background: linear-gradient(90deg, #f87171, #2563eb);
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+  font-size: 4rem;
 }
 
 .sub-title {
-  top: 60%;
-  animation: fadeIn 1s ease forwards 0.1s; /* Delay of 3 seconds */
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .svg-icon {
-  position: absolute;
-  right: 20px;
-  top: 15%;
-  opacity: 0;
-  animation: fadeInFromRight 1s ease forwards 0.1s; /* Delay of 4 seconds */
+  margin-top: 160px;
+}
+
+/* Медиа-запросы */
+@media (max-width: 1300px) {
+  .main-container-hero {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container-text-button-hero {
+    margin-top: 90px;
+  }
+
+  .container-hero {
+    align-items: center;
+  }
+
+  .hero-title-container {
+    text-align: center;
+  }
+
+  .sub-title-container {
+    text-align: center;
+  }
+
+  .container-image-hero {
+    width: 100%;
+    margin-top: 35px;
+  }
+
+  .sub-title {
+    margin-left: 0;
+  }
+
+  .svg-icon {
+    margin-top: 0px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container-hero {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container-text-button-hero {
+    margin-top: 90px;
+  }
+
+  .svg-icon {
+    margin-top: 0px;
+  }
+
+  .container-hero {
+    align-items: center;
+  }
+
+  .hero-title-container {
+    text-align: center;
+  }
+
+  .sub-title-container {
+    text-align: center;
+  }
+
+  .container-image-hero {
+    margin-top: 20px;
+  }
+
+  .sub-title {
+    margin-left: 0;
+  }
+}
+
+/* Медиа-запрос для экранов с шириной менее 700px */
+@media (max-width: 700px) {
+  .hero-title {
+    font-size: 3rem;  /* Уменьшенный размер шрифта */
+  }
+
+  .sub-title-gradient {
+    font-size: 3rem;  /* Уменьшенный размер шрифта */
+    padding-bottom: 0.35em;
+  }
+  
+  .sub-title button {
+    font-size: 1.75rem;  /* Уменьшенный размер шрифта */
+    padding: 16px;  /* Уменьшенные padding */
+  }
 }

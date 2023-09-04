@@ -14,7 +14,6 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-      console.log(loading)
     }, 2000);
 
     const handleScroll = () => {
@@ -36,7 +35,7 @@ export default function Home() {
             case 1:
             case 2:
             case 3:
-              container.style.backgroundColor = '#fedb87';
+              container.style.backgroundColor = '#fdf4ff';
               break;
             case 4:
               container.style.backgroundColor = '#5d5eb1';
@@ -54,11 +53,25 @@ export default function Home() {
       }
     };
 
+    const adjustSectionHeight = () => {
+      const sections = document.querySelectorAll('.data-scroll-section');
+      sections.forEach((section: Element) => {
+        const contentHeight = (section as HTMLElement).scrollHeight;
+        (section as HTMLElement).style.minHeight = `${contentHeight}px`;
+      });
+    };
+
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', adjustSectionHeight);
+    window.addEventListener('DOMContentLoaded', adjustSectionHeight);
+
+    adjustSectionHeight();
 
     return () => {
       clearTimeout(timer);
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', adjustSectionHeight);
+      window.removeEventListener('DOMContentLoaded', adjustSectionHeight);
     };
   }, []);
 
@@ -68,19 +81,19 @@ export default function Home() {
         <Loader />
       </div>
       <div className="bg-white data-scroll-container transition-all duration-500 ease-in-out w-full">
-        <section className="data-scroll-section w-full h-screen">
+        <section className="data-scroll-section w-full min-h-screen">
           <Hero loading={loading} />
         </section>
-        <section className="data-scroll-section w-full h-screen">
+        <section className="data-scroll-section w-full min-h-screen">
           <Stats />
         </section>
-        <section className="data-scroll-section w-full h-screen">
+        <section className="data-scroll-section w-full min-h-screen">
         <Features />
         </section>
-        <section className="data-scroll-section w-full h-screen">
+        <section className="data-scroll-section w-full min-h-screen">
           <h1></h1>
         </section>
-        <footer className="data-scroll-section w-full h-screen">
+        <footer className="data-scroll-section w-full min-h-screen">
           <Footer />
         </footer>
       </div>

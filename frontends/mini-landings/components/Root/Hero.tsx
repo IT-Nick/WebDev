@@ -22,35 +22,26 @@ export default function Hero({ loading }: HeroProps) {
   }, [loading]);
 
   return (
-    <div className="data-scroll-section w-full h-screen relative">
-        {titleAnimation && (
-            <div className="hero-title">
-            <div>Создавай будущее</div>
-            <div>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-blue-400">
-                вместе с нами!
-                </span>
-            </div>
-            </div>
-        )}
-      {subTitleAnimation && (
-            <a
-              href="https://team.mpei.ru/events"
-              className="sub-title px-20 py-6 mt-8 text-4xl font-bold text-rose-400 border border-rose-600 hover:bg-rose-600 hover:text-white focus:outline-none focus:ring active:bg-rose-500"
-            >
-              Присоединиться
-            </a>
-      )}
-      {subTitleAnimation && (
-        <div className="svg-icon">
-          <Image 
-            src="/heroimg.svg" 
-            alt="Next Image" 
-            width={600}  // Your width here
-            height={600}  // Your height here
-          />
-        </div>
-        )}
+<div className="main-container-hero">
+  <div className="container-hero container-text-button-hero">
+    <div className="hero-title-container">
+      <h1 className={`hero-title ${!loading && titleAnimation ? 'animate-hero-title' : 'initial-offscreen'}`}>
+        Создавай будущее
+      </h1>
     </div>
+    <div className="sub-title-container">
+      <h1 className={`sub-title-gradient ${!loading ? 'animate-sub-title-gradient' : ''}`}>вместе с нами!</h1>
+    </div>
+    <div className="sub-title">
+      <button className={`px-20 py-6 text-4xl font-bold text-rose-400 border border-rose-600 hover:bg-rose-600 hover:text-white focus:outline-none focus:ring active:bg-rose-500 ${!loading && subTitleAnimation ? 'animate-sub-title' : 'initial-hidden'}`}>
+        Присоединиться
+      </button>
+    </div>
+  </div>
+  <div className="container-hero container-image-hero">
+    <Image src="/heroimg.svg" alt="Next Image" width={600} height={600} className={`svg-icon ${!loading && subTitleAnimation ? 'animate-svg-icon' : 'initial-offscreen-right'}`} />
+  </div>
+</div>
+
   );
 }

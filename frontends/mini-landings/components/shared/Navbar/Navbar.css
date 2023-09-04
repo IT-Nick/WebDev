@@ -1,14 +1,12 @@
 .loading-logo {
     position: relative;
     top: 2.25em;
-    left: 2.25em;
     opacity: 0;
   }
   
   .loaded-logo {
     position: relative;
     top: 2.25em;
-    left: 2.25em;
     width: 30%;
     opacity: 1;
   }
@@ -23,3 +21,11 @@
     position: relative;
   }
   
+
+  /* Медиа-запросы */
+@media (max-width: 1300px) {
+    .container {
+      padding-left: 2.25em;
+      padding-right: 2.25em;
+    }
+}  
