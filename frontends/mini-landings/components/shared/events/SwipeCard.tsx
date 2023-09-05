@@ -1,18 +1,26 @@
 import React from 'react';
 import { useSpring, animated } from 'react-spring';
 
+type CardInfo = {
+  image: string;
+  title: string;
+  description: string;
+};
+
 type Props = {
   onSwipeLeft: () => void;
   onSwipeRight: () => void;
-  content: string;
+  cardInfo: CardInfo;
   onClickMore: () => void;
 };
 
-const SwipeCard: React.FC<Props> = ({ onSwipeLeft, onSwipeRight, content, onClickMore }) => {
+const SwipeCard: React.FC<Props> = ({ onSwipeLeft, onSwipeRight, cardInfo, onClickMore }) => {
   const [springProps, setSpring] = useSpring(() => ({
     x: 0,
     from: { x: 0 },
   }));
+
+  const { image, title, description } = cardInfo;
 
   const handleStart = (clientX: number) => {
     const startX = clientX;
@@ -23,9 +31,9 @@ const SwipeCard: React.FC<Props> = ({ onSwipeLeft, onSwipeRight, content, onClic
     };
 
     const onEnd = () => {
-      if (springProps.x.get() > 50) {
+      if (springProps.x.get() > 100) {
         onSwipeRight();
-      } else if (springProps.x.get() < -50) {
+      } else if (springProps.x.get() < -100) {
         onSwipeLeft();
       }
       setSpring({ x: 0 });
@@ -76,13 +84,21 @@ const SwipeCard: React.FC<Props> = ({ onSwipeLeft, onSwipeRight, content, onClic
       }}
       className="bg-white p-4 rounded-lg shadow-md w-5/6 h-5/6 mx-auto my-auto mt-16 relative"
       >
-      <div>{content}</div>
-      <button
-        onClick={onClickMore}
-        className="absolute bottom-2 left-2 bg-blue-500 text-white p-2 rounded"
-      >
-        Подробнее
-      </button>
+      <div className="flex flex-col h-full">
+        <div style={{ flex: '1' }}>
+          <img src={image} alt={title} className="object-cover h-full w-full rounded-t-lg" />
+        </div>
+        <div style={{ flex: '1' }} className="p-2">
+          <h2 className="text-lg font-semibold">{title}</h2>
+          <p className="text-sm">{description}</p>
+        </div>
+        <button
+          onClick={onClickMore}
+          className="absolute bottom-2 left-2 bg-white text-gray-200 text-sm p-2 rounded"
+        >
+          Нажми, чтобы узнать
+        </button>
+      </div>
     </animated.div>
   );
 };
