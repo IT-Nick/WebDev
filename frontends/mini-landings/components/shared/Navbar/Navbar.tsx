@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { useLoading } from '@/components/Providers/LoadingProvider'
 import Menu from '@/components/shared/Navbar/Menu/menu'
+import Link from 'next/link';
+import Image from 'next/image';
 
 import './Navbar.css';
 
@@ -32,7 +34,15 @@ export default function Navbar() {
       >
         <div className="container mx-auto py-2 flex items-center justify-between">
           <div className={`${scrolling ? 'move-up-logo' : ''}`}>
-            <img src="/assets/PreLogo.svg" className={logoClass} alt="Logo" />
+          <Link href="/">
+                <Image 
+                  src="/assets/PreLogo.svg" 
+                  alt="Logo" 
+                  width={150}
+                  height={150}
+                  className={logoClass}
+                />
+            </Link>
           </div>
           <div className="lg:hidden">
             {/* Мобильное меню */}
