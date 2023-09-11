@@ -1,11 +1,132 @@
-/* Скрываем блок на мобильных устройствах */
-.mobile-hidden {
-  display: none;
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+  margin-top: 70px;
 }
 
-/* Показываем блок на десктопах */
-@media (min-width: 768px) {
-  .mobile-hidden {
-    display: block;
+.card {
+  width: 300px;
+  height: 500px;
+  margin: 20px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card h3 {
+  color: hotpink;
+  font-size: 1.5rem;
+
+  /* ярко-розовый заголовок */
+}
+
+.hide-card {
+  animation: disappear 0.3s ease-in-out forwards;
+}
+
+@keyframes disappear {
+  0% {
+    transform: scale(1);
   }
+
+  20% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}
+
+
+.centered-container {
+  flex-direction: row; /* сделаем флекс-контейнер горизонтальным */
+  flex-wrap: wrap;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: calc(100vh / 3);
+  padding-left: 20px;  /* отступ слева */
+  padding-right: 20px;  /* отступ справа */
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.centered-text {
+  background: linear-gradient(90deg, #f87171, #2563eb);
+  -webkit-background-clip: text;
+  color: transparent;
+  /* делаем текст белым */
+  text-align: center;
+}
+
+.small-text {
+  color: #525375;
+  /* делаем текст белым */
+  font-size: 1.5rem;
+  /* установка размера шрифта чуть меньше */
+}
+
+.centered-container h1 {
+  font-size: 4rem;
+  /* очень большой текст */
+  font-weight: bold;
+  /* жирный текст */
+}
+
+input[type="text"] {
+  margin-top: 20px;
+  border: 2px solid #525375;
+  width: 100%;
+  padding: 20px;  /* Увеличьте отступ для увеличения высоты */
+  font-size: 26px;  /* Увеличьте размер шрифта */
+  font-weight: bold;  /* Сделайте текст жирным */
+  box-sizing: border-box;
+}
+
+
+.expanded-container {
+  position: fixed;
+  top: var(--card-top);
+  left: var(--card-left);
+  width: var(--card-width);
+  height: var(--card-height);
+  background-color: white;
+  z-index: 1000;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+
+}
+
+.expanded-container.showing {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition-timing-function: ease-in-out;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
 }

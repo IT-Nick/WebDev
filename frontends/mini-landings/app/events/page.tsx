@@ -1,131 +1,214 @@
 "use client";
-import { useEffect, useState } from 'react';
-import Loader from '@/components/shared/Loader/Loader'
+import React, { useEffect, useState } from 'react';
 import './Page.css';
-import { useLoading } from '@/components/Providers/LoadingProvider'
-import Footer from '@/components/Root/Footer'
-import SwipeCard from '@/components/shared/events/SwipeCard'
-import StaticCard from '@/components/shared/events/StaticCard'
-
-const data = [
-  {
-    image: '/assets/img/bg_2.svg',
-    title: 'Card 1',
-    description: 'This is card 1',
-  },
-  {
-    image: '/assets/img/bg_3.svg',
-    title: 'Card 2',
-    description: 'This is card 2',
-  },
-  {
-    image: '/assets/img/bg_4.svg',
-    title: 'Card 3',
-    description: 'This is card 3',
-  },
-  {
-    image: '/assets/img/bg_4.svg',
-    title: 'Card 4',
-    description: 'This is card 4',
-  },
-];
+import Loader from '@/components/shared/Loader/Loader';
+import FooterBlack from '@/components/Root/FooterBlack';
+import { useLoading } from '@/components/Providers/LoadingProvider';
+import DateSlider from '@/components/shared/events/DateSlider';
+import Image from 'next/image';
 
 export default function Home() {
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [index, setIndex] = useState(0);
-  const [nextIndex, setNextIndex] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-
-  const handleSwipeLeft = () => {
-    setIndex(nextIndex);
-    setNextIndex((nextIndex + 1) % data.length);
-  };
-
-  const handleSwipeRight = () => {
-    setShowModal(true);
-    setIndex(nextIndex);
-    setNextIndex((nextIndex + 1) % data.length);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
   const { loading, setLoading } = useLoading();
+  const [search, setSearch] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [nonSelectedCards, setNonSelectedCards] = useState<number[]>([]);
+
+  const [cards, setCards] = useState([
+    {
+      id: 1,
+      title: 'Я - Профессионал',
+      content: ' ',
+      startDate: '2023-10-01',
+      endDate: '2023-11-30',
+      imgSrc: '/assets/hero.svg'
+    },
+    {
+      id: 2,
+      title: 'Хакатон Моспром',
+      content: ' ',
+      startDate: '2023-12-05',
+      endDate: '2023-12-07',
+      imgSrc: '/assets/hero.svg'
+    },
+    {
+      id: 3,
+      title: 'Лидеры цифровой трансформации',
+      content: ' ',
+      startDate: '2024-01-10',
+      endDate: '2024-02-10',
+      imgSrc: '/assets/hero.svg'
+    },
+    {
+      id: 4,
+      title: 'ICPC',
+      content: ' ',
+      startDate: '2024-03-20',
+      endDate: '2024-03-25',
+      imgSrc: '/assets/hero.svg'
+    },
+    {
+      id: 5,
+      title: 'CASE-IN',
+      content: ' ',
+      startDate: '2023-09-15',
+      endDate: '2023-10-15',
+      imgSrc: '/assets/hero.svg'
+    },
+    {
+      id: 6,
+      title: 'Кубок Росатома',
+      content: ' ',
+      startDate: '2024-05-05',
+      endDate: '2024-06-05',
+      imgSrc: '/assets/hero.svg'
+    },
+    {
+      id: 7,
+      title: 'Кубок МЭИ',
+      content: ' ',
+      startDate: '2024-02-01',
+      endDate: '2024-02-28',
+      imgSrc: '/assets/hero.svg'
+    }
+  ]);
+
+  const humanReadableDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(date);
+  }
+
+
+  const [expandedCard, setExpandedCard] = useState<null | {
+    id: number;
+    title: string;
+    content: string;
+    startDate: string;
+    endDate: string;
+  }>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
+
+    const resizeHandler = () => {
+      const gap = window.innerWidth < 600 ? 30 : 50;
+      document.documentElement.style.setProperty('--card-gap', `${gap}px`);
+    };
+
+    window.addEventListener('resize', resizeHandler);
+    resizeHandler();
+
     return () => {
       clearTimeout(timer);
+      window.removeEventListener('resize', resizeHandler);
     };
-  }, []);
+  }, [setLoading]);
 
-  const handleMoreInfo = () => {
-    console.log('Clicked More Info');
+  const filteredCards = cards.filter(card => {
+    const matchesSearch = card.title.toLowerCase().includes(search.toLowerCase());
+    if (startDate || endDate) {
+      return matchesSearch && (
+        (startDate ? card.startDate >= startDate : true) && (endDate ? card.endDate <= endDate : true)
+      );
+    }
+    return matchesSearch;
+  });
+
+
+
+  const handleClickCard = (card: any) => {
+    // Сначала устанавливаем карточки, которые нужно скрыть
+    setNonSelectedCards(cards.map(c => c.id).filter(id => id !== card.id));
+
+    // Затем добавляем задержку
+    setTimeout(() => {
+      // Ваш текущий код для раскрытия карточки
+      const element = document.getElementById(`card-${card.id}`);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        document.documentElement.style.setProperty('--card-width', `${rect.width}px`);
+        document.documentElement.style.setProperty('--card-height', `${rect.height}px`);
+        document.documentElement.style.setProperty('--card-top', `${rect.top}px`);
+        document.documentElement.style.setProperty('--card-left', `${rect.left}px`);
+      }
+
+      setExpandedCard(card);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (document.querySelector('.expanded-container')) {
+            document.querySelector('.expanded-container')?.classList.add('showing');
+          }
+        });
+      });
+    }, 350); // Задержка в 400 миллисекунд будет совпадать с временем анимации в CSS
   };
-  
+
+  const handleCloseCard = () => {
+    if (document.querySelector('.expanded-container')) {
+      document.querySelector('.expanded-container')?.classList.remove('showing');
+    }
+
+    setNonSelectedCards([]);
+
+    setTimeout(() => {
+      setExpandedCard(null);
+    }, 400);
+  };
 
   return (
     <>
       <div className={`loader-container ${loading ? '' : 'fade-out'}`}>
         <Loader />
       </div>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-red-50">
-        <div className="md:hidden w-full h-screen relative">
-          {index < data.length && (
-            <div className="absolute w-full h-full">
-<SwipeCard
-  cardInfo={data[index]}
-  onSwipeLeft={handleSwipeLeft}
-  onSwipeRight={handleSwipeRight}
-  onClickMore={handleMoreInfo} // <- Этот проп должен быть передан, так как он указан как обязательный
-/>
-            </div>
-          )}
-          {nextIndex < data.length && (
-            <div className="absolute w-full h-full">
-<SwipeCard
-  cardInfo={data[index]}
-  onSwipeLeft={handleSwipeLeft}
-  onSwipeRight={handleSwipeRight}
-  onClickMore={handleMoreInfo} // <- Этот проп должен быть передан, так как он указан как обязательный
-/>
-            </div>
-          )}
+
+      {expandedCard && (
+        <div className="expanded-container">
+          <button className="close-button" onClick={handleCloseCard}>X</button>
+          <h3>{expandedCard.title}</h3>
+          <p>{expandedCard.content}</p>
+          <p>Прием заявок с: {humanReadableDate(expandedCard.startDate)}</p>
+          <p>Прием заявок до: {humanReadableDate(expandedCard.endDate)}</p>
+
         </div>
-        <div className="hidden md:flex flex-wrap">
-          {data.map((card, idx) => (
-            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4">
-<StaticCard 
-  key={idx} 
-  cardInfo={card} 
-  onClickMore={handleMoreInfo}
-/>            </div>
+      )}
+
+      <div className=" w-full">
+        <div className="centered-container">
+          <div>
+            <h1 className="centered-text">Твоё резюме начинается здесь</h1>
+            <p className="small-text centered-text">Мы постоянно мониторим самые интересные мероприятия и собираем их в одном месте.</p>
+            <input
+              type="text"
+              placeholder="Поиск..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <DateSlider setStartDate={setStartDate} setEndDate={setEndDate} />
+          </div>
+        </div>
+
+        <div className="cards-container">
+          {filteredCards.map((card) => (
+            <div
+              id={`card-${card.id}`}
+              key={card.id}
+              className={`card ${nonSelectedCards.includes(card.id) ? 'hide-card' : ''}`}
+              onClick={() => handleClickCard(card)}
+            >
+              <Image src={card.imgSrc} alt={card.title} width={300} height={300} />
+              <h3>{card.title}</h3>
+              <p className="content-text">{card.content}</p> {/* Добавленный класс */}
+              <p>Прием заявок с: {humanReadableDate(card.startDate)}</p>
+              <p>Прием заявок до: {humanReadableDate(card.endDate)}</p>
+            </div>
           ))}
         </div>
-        {showModal && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="border p-2 rounded mb-2"
-              />
-              <button
-                className="bg-blue-500 text-white p-2 rounded"
-                onClick={closeModal}
-              >
-                Subscribe
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="hidden md:block bg-blue-100 w-full">
+
         <footer className="w-full min-h-screen">
-          <Footer />
+          <FooterBlack />
         </footer>
       </div>
     </>

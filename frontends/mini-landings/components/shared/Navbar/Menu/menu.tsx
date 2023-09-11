@@ -206,7 +206,11 @@ const Menu: React.FC = () => {
                     </div>
                     <div className="global-menu">
                         <div className="global-menu__wrap">
-                            <a className="global-menu__item global-menu__item--demo-2" href="#">Мероприятия</a>
+                            <Link href="/events">
+                                <div className="global-menu__item global-menu__item--demo-2">
+                                    Мероприятия
+                                </div>
+                            </Link>
                             <a className="global-menu__item global-menu__item--demo-2" href="#">Блог</a>
                             <a className="global-menu__item global-menu__item--demo-2" href="#">Полезное</a>
                             <Link href="/signin">

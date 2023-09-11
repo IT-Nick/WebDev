@@ -5,7 +5,7 @@ import Hero from '@/components/Root/Hero'
 import './Page.css';
 import { useLoading } from '@/components/Providers/LoadingProvider'
 import Footer from '@/components/Root/Footer' 
-import Stats from '@/components/Root/Stats' 
+import Atom from '@/components/Root/Atom' 
 import Features from '@/components/Root/Features';
 
 export default function Home() {
@@ -35,7 +35,7 @@ export default function Home() {
             case 1:
             case 2:
             case 3:
-              container.style.backgroundColor = '#fdf4ff';
+              container.style.backgroundColor = '#ffffff';
               break;
             case 4:
               container.style.backgroundColor = '#5d5eb1';
@@ -86,8 +86,8 @@ export default function Home() {
         <section className="data-scroll-section w-full min-h-screen">
           <Hero loading={loading} />
         </section>
-        <section className="data-scroll-section w-full min-h-screen">
-          <Stats />
+        <section className="data-scroll-section flex justify-center items-center w-full min-h-screen">
+          <Atom />
         </section>
         <section className="data-scroll-section w-full min-h-screen">
         <Features />

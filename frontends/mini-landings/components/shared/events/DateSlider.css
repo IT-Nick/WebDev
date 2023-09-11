@@ -1,0 +1,47 @@
+.date-slider-container {
+    width: 100%;
+    /* Полная ширина родительского контейнера, как у поля ввода */
+    height: 4px;
+    background: #525375;
+    position: relative;
+    border-radius: 4px;
+    border: 4px solid #525375;
+    /* Та же самая обводка, как у поля ввода */
+    margin: 20px 0;
+    /* Задаем верхний и нижний отступ */
+    box-sizing: border-box;
+    /* Учитываем рамку в общей ширине */
+}
+
+.date-slider-thumb {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border: 2px solid #525375;
+    /* Та же самая обводка, как у поля ввода */
+    cursor: pointer;
+    top: 50%;
+    left: 0;
+    /* начальное положение для левого бегунка */
+    transform: translateY(-50%);
+    border-radius: 50%;
+    transition: left 0.2s ease, transform 0.2s ease;
+}
+
+.date-slider-thumb:hover,
+.date-slider-thumb.active {
+    transform: translateY(-50%) scale(1.2);
+}
+
+.date-slider-label {
+    position: absolute;
+    color: #fff;
+    font-size: 20px;
+    white-space: nowrap;
+    color: #525375; /* изменение цвета текста */
+    bottom: -40px;  /* изменение позиции */
+    left: 50%;      /* центрирование по горизонтали */
+    transform: translateX(-50%); /* коррекция смещения для точного центрирования */
+    text-align: center; /* выравнивание текста по центру */
+}
