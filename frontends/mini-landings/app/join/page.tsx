@@ -18,6 +18,7 @@ export default function Home() {
   const [shouldShowThankYou, setShouldShowThankYou] = useState(false);
   const [showTitle, setShowTitle] = useState(true); // Новое состояние
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // новое состояние для сообщения об ошибке
+  const [serverError, setServerError] = useState<string | null>(null); // Новое состояние для ошибки от сервера
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,38 +58,45 @@ export default function Home() {
       return;
     }
 
-    setErrorMessage(null); // очистить сообщение об ошибке
+    setErrorMessage(null);
     setShowArrow(false);
-    setShowTitle(false); // Скрыть заголовок
+    setShowTitle(false);
 
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
       } else {
-        setCurrentQuestion(currentQuestion + 1);
+        const [email, institute, course, team_experience, best_skill, full_name] = answers;
 
-        setTimeout(() => {
-          fetch('/api/submitAnswers', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ answers }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.success) {
-                setSubmitted(true);
-              }
-            })
-            .catch((error) => {
-              console.error('Fetch failed', error);
+        fetch('/general-management/api/applications/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            institute,
+            course: parseInt(course, 10),
+            team_experience: team_experience.toLowerCase() === 'да',
+            best_skill,
+            full_name
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
               setSubmitted(true);
-            });
-        }, 500);
+            } else {
+              setServerError(data.message || 'Неизвестная ошибка сервера');
+            }
+          })
+          .catch((error) => {
+            console.error('Fetch failed', error);
+            setServerError('Произошла ошибка при отправке данных');
+          });
       }
-      setShowTitle(true); // Показать новый заголовок
-      setShowArrow(true);  // Показать стрелку
+      setShowTitle(true);
+      setShowArrow(true);
     }, 500);
   };
 
@@ -139,6 +147,11 @@ export default function Home() {
             </div>
             {errorMessage && (
               <div className="absolute bottom-2 left-3 text-gray-400">{errorMessage}</div>
+            )}
+            {serverError && (
+              <div className="absolute bottom-2 left-3 text-red-400">
+                {serverError}
+              </div>
             )}
           </div>
         </div>

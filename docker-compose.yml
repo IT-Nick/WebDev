@@ -1,14 +1,14 @@
 version: '3'
 services:
-  general-page:
-    build: ./frontends/general-page
-    ports:
-      - 3000:3000
-    networks:
-      - microservices_network
-    depends_on:
-      - nginx
-    mem_limit: 500m
+  # general-page:
+  #   build: ./frontends/general-page
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - microservices_network
+  #   depends_on:
+  #     - nginx
+  #   mem_limit: 500m
   mini-landings:
     build: ./frontends/mini-landings
     ports:
@@ -19,33 +19,34 @@ services:
       - nginx
     mem_limit: 1500m
   #Система авторизации
-  auth:
-    build: ./frontends/auth
-    ports:
-      - 3001:3000
-    networks:
-      - microservices_network
-    depends_on:
-      - nginx
-    mem_limit: 500m
-  auth-system:
-    build: ./services/auth-system/backend
-    ports:
-      - 8080:8080
-    networks:
-      - microservices_network
-    depends_on:
-      - nginx
-    mem_limit: 500m
-
-  # general-management:
-  #   build: ./services/general-management/backend
+  # auth:
+  #   build: ./frontends/auth
+  #   ports:
+  #     - 3001:3000
+  #   networks:
+  #     - microservices_network
+  #   depends_on:
+  #     - nginx
+  #   mem_limit: 500m
+  # auth-system:
+  #   build: ./services/auth-system/backend
   #   ports:
   #     - 8080:8080
   #   networks:
   #     - microservices_network
   #   depends_on:
   #     - nginx
+  #   mem_limit: 500m
+
+  general-management:
+    build: ./services/general-management/backend
+    ports:
+      - 8080:8080
+    networks:
+      - microservices_network
+    depends_on:
+      - nginx
+    mem_limit: 1500m
 
   api-gateway:
     build: ./api-gateway/backend
