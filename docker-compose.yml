@@ -18,6 +18,8 @@ services:
     depends_on:
       - nginx
     mem_limit: 1500m
+    stop_grace_period: 1m
+
   #Система авторизации
   # auth:
   #   build: ./frontends/auth
