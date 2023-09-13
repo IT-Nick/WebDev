@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/IT-Nick/WebDev/services/general-management/backend/utils"
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
 func NewRouter() *mux.Router {
@@ -11,6 +12,14 @@ func NewRouter() *mux.Router {
 	// Оборачиваем все обработчики в CORS middleware
 	router.Use(utils.CorsMiddleware)
 	s := router.PathPrefix("/general-management").Subrouter()
+
+	// Маршрут для отдачи HTML страницы
+	s.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// Устанавливаем Content-Type заголовок для HTML
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		// Отправляем HTML страницу с текстом "технический маршрут"
+		w.Write([]byte("<html><body>технический маршрут</body></html>"))
+	}).Methods("GET")
 
 	// Маршруты API для пользователей
 	// создает новую заявку на вступление в команду или организацию.
