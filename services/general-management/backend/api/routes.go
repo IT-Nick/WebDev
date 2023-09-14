@@ -11,35 +11,49 @@ func NewRouter() *mux.Router {
 
 	// Оборачиваем все обработчики в CORS middleware
 	router.Use(utils.CorsMiddleware)
-	s := router.PathPrefix("/general-management").Subrouter()
-
 	// Маршрут для отдачи HTML страницы
-	s.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Устанавливаем Content-Type заголовок для HTML
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		// Отправляем HTML страницу с текстом "технический маршрут"
 		w.Write([]byte("<html><body>технический маршрут</body></html>"))
 	}).Methods("GET")
 
+	// Маршрут для отдачи HTML страницы
+	router.HandleFunc("/api/check", func(w http.ResponseWriter, r *http.Request) {
+		// Устанавливаем Content-Type заголовок для HTML
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		// Отправляем HTML страницу с текстом "технический маршрут"
+		w.Write([]byte("<html><body>/api/check</body></html>"))
+	}).Methods("GET")
+
+	// Маршрут для отдачи HTML страницы
+	router.HandleFunc("/api/get/", func(w http.ResponseWriter, r *http.Request) {
+		// Устанавливаем Content-Type заголовок для HTML
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		// Отправляем HTML страницу с текстом "технический маршрут"
+		w.Write([]byte("<html><body>/api/get/</body></html>"))
+	}).Methods("GET")
+
 	// Маршруты API для пользователей
 	// создает новую заявку на вступление в команду или организацию.
-	s.HandleFunc("/api/applications/create", CreateApplicationHandler).Methods("POST")
+	router.HandleFunc("/api/applications/create", CreateApplicationHandler).Methods("POST")
 	// Авторизует пользователя в системе. (Новый)
-	s.HandleFunc("/api/users/auth", AuthUserHandler).Methods("POST")
+	router.HandleFunc("/api/users/auth", AuthUserHandler).Methods("POST")
 
 	// Маршруты API для администратора
 	// создает новое мероприятие.
-	s.HandleFunc("/api/events/create", CreateEventHandler).Methods("POST")
+	router.HandleFunc("/api/events/create", CreateEventHandler).Methods("POST")
 	// Удаляет существующее мероприятие.
-	s.HandleFunc("/api/events/delete", DeleteEventHandler).Methods("DELETE")
+	router.HandleFunc("/api/events/delete", DeleteEventHandler).Methods("DELETE")
 	// Одобряет заявку на вступление в сборную.
-	s.HandleFunc("/api/applications/approve", ApproveApplicationHandler).Methods("PUT")
+	router.HandleFunc("/api/applications/approve", ApproveApplicationHandler).Methods("PUT")
 	// Возвращает список всех заявок на вступление в сборную.
-	s.HandleFunc("/api/applications/list", ListApplicationsHandler).Methods("GET")
+	router.HandleFunc("/api/applications/list", ListApplicationsHandler).Methods("GET")
 	// Возвращает список всех мероприятий.
-	s.HandleFunc("/api/events/list", ListEventsHandler).Methods("GET")
+	router.HandleFunc("/api/events/list", ListEventsHandler).Methods("GET")
 	// Возвращает список всех одобренных пользователей из таблицы auth. (Новый)
-	s.HandleFunc("/api/users/list", ListAuthUsersHandler).Methods("GET")
+	router.HandleFunc("/api/users/list", ListAuthUsersHandler).Methods("GET")
 
 	return router
 }
