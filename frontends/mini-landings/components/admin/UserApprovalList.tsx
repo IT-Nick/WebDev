@@ -17,15 +17,14 @@ const UserApprovalList: React.FC = () => {
 
   // Загрузим данные с сервера
   useEffect(() => {
-    fetch('/api/applications/list')
+    fetch('/general-management/api/applications/list')
       .then((res) => res.json())
       .then((data) => setApplications(data))
       .catch((err) => console.error(err));
   }, []);
-
   // Одобрить заявку
   const approveApplication = (id: number) => {
-    fetch('/api/applications/approve', {
+    fetch('/general-management/api/applications/approve', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
