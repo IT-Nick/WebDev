@@ -19,6 +19,7 @@ export default function Home() {
   const [showTitle, setShowTitle] = useState(true); // Новое состояние
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // новое состояние для сообщения об ошибке
   const [serverError, setServerError] = useState<string | null>(null); // Новое состояние для ошибки от сервера
+  const selectClassName = answers[currentQuestion] === 'да' ? 'hide-arrow' : '';
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -43,7 +44,28 @@ export default function Home() {
     }
   }, [submitted]);
 
+  useEffect(() => {
+    if (currentQuestion === 2) {
+      setErrorMessage("нужно число");
+    } else {
+      setErrorMessage(null);
+    }
+  }, [currentQuestion]);
+
+  const handleSelectKeyPress = (e: React.KeyboardEvent<HTMLSelectElement>) => {
+    if (e.key === 'Enter') {
+      handleNextQuestion();
+    }
+  };
+
   const progressBarWidth = `${(currentQuestion / questions.length) * 100}%`;
+
+  const handleSelectKeyDown = (e: React.KeyboardEvent<HTMLSelectElement>) => {
+    if (e.key === 'Enter') {
+      handleNextQuestion();
+    }
+  };
+
 
   const handleNextQuestion = () => {
     const answer = answers[currentQuestion] || '';
@@ -57,6 +79,7 @@ export default function Home() {
       setErrorMessage("это не почта");
       return;
     }
+
 
     setErrorMessage(null);
     setShowArrow(false);
@@ -100,7 +123,7 @@ export default function Home() {
     }, 500);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = e.target.value;
     setAnswers(newAnswers);
@@ -110,6 +133,50 @@ export default function Home() {
     if (e.key === 'Enter') {
       handleNextQuestion();
     }
+  };
+
+  const getInputField = () => {
+    const currentValue = answers[currentQuestion] || '';
+
+    if (questions[currentQuestion] === 'На каком ты курсе?') {
+      return (
+        <input
+          type="number"
+          value={currentValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          className="border w-full h-1/2 py-8 px-4 text-2xl"
+          style={{ borderWidth: '2px', borderColor: '#525375', color: '#525375' }}
+        />
+      );
+    }
+
+    if (questions[currentQuestion] === 'Есть опыт командной работы?') {
+      return (
+        <select
+          value={currentValue}
+          onChange={handleInputChange}
+          className={`border w-full h-1/2 py-8 px-4 text-2xl ${selectClassName}`}
+          style={{ borderWidth: '2px', borderColor: '#525375', color: '#525375' }}
+          onKeyDown={handleSelectKeyDown}
+        >
+          <option value="" disabled>Выберите</option>
+          <option value="да">Да</option>
+          <option value="нет">Нет</option>
+        </select>
+      );
+    }
+
+    return (
+      <input
+        type="text"
+        value={currentValue}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        className="border w-full h-1/2 py-8 px-4 text-2xl"
+        style={{ borderWidth: '2px', borderColor: '#525375', color: '#525375' }}
+      />
+    );
   };
 
   return (
@@ -123,15 +190,8 @@ export default function Home() {
           <div className="w-full max-w-2xl h-3/4 relative">
             <div className={`text-4xl font-bold text-[#525375] mb-4 ${showTitle ? 'fade-in' : 'fade-out'}`}>{questions[currentQuestion]}</div>
             <div className="relative h-full w-full">
-              <input
-                className="border w-full h-1/2 py-8 px-4 text-2xl"
-                style={{ borderWidth: '2px', borderColor: '#525375', color: '#525375' }}  // добавлено свойство color
-                type="text"
-                value={answers[currentQuestion] || ''}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-              />
-              {showArrow && (
+              {getInputField()}
+              {(showArrow && !(currentQuestion === 3 && !answers[currentQuestion])) && (
                 <div className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-3xl arrow"
                   style={{ color: '#525375' }}
                   onClick={handleNextQuestion}>
