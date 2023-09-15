@@ -108,6 +108,9 @@ func ApproveApplicationHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Устанавливаем заголовок Content-Type
+	w.Header().Set("Content-Type", "application/json")
+
 	// Получаем id и учетные данные из JSON
 	idFloat, ok1 := requestData["id"].(float64) // JSON часто интерпретирует числа как float64
 	id := int(idFloat)
@@ -127,6 +130,7 @@ func ApproveApplicationHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"status": "approved"})
 }
+
 
 // CreateEventHandler обрабатывает создание нового мероприятия
 func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
