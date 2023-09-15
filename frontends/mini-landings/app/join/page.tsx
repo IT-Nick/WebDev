@@ -52,12 +52,6 @@ export default function Home() {
     }
   }, [currentQuestion]);
 
-  const handleSelectKeyPress = (e: React.KeyboardEvent<HTMLSelectElement>) => {
-    if (e.key === 'Enter') {
-      handleNextQuestion();
-    }
-  };
-
   const progressBarWidth = `${(currentQuestion / questions.length) * 100}%`;
 
   const handleSelectKeyDown = (e: React.KeyboardEvent<HTMLSelectElement>) => {
@@ -91,19 +85,25 @@ export default function Home() {
       } else {
         const [email, institute, course, team_experience, best_skill, full_name] = answers;
 
+        // Формируем данные, которые будут отправлены на сервер
+        const payload = {
+          email,
+          institute,
+          course: parseInt(course, 10),
+          team_experience: team_experience.toLowerCase() === 'да',
+          best_skill,
+          full_name
+        };
+
+        // Выводим данные в консоль перед отправкой
+        console.log("Sending JSON payload:", JSON.stringify(payload));
+
         fetch('/general-management/api/applications/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            email,
-            institute,
-            course: parseInt(course, 10),
-            team_experience: team_experience.toLowerCase() === 'да',
-            best_skill,
-            full_name
-          }),
+          body: JSON.stringify(payload),
         })
           .then((res) => res.json())
           .then((data) => {
