@@ -74,6 +74,8 @@ func CreateApplicationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+	response := map[string]bool{"success": true}
+	json.NewEncoder(w).Encode(response)
 }
 
 // ListApplicationsHandler обрабатывает получение списка заявок
