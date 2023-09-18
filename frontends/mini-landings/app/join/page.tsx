@@ -20,6 +20,8 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // новое состояние для сообщения об ошибке
   const [serverError, setServerError] = useState<string | null>(null); // Новое состояние для ошибки от сервера
   const selectClassName = answers[currentQuestion] === 'да' ? 'hide-arrow' : '';
+  const [password, setPassword] = useState(''); // Новое состояние для пароля
+  const [confirmPassword, setConfirmPassword] = useState(''); // Новое состояние для подтверждения пароля
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,6 +59,35 @@ export default function Home() {
   const handleSelectKeyDown = (e: React.KeyboardEvent<HTMLSelectElement>) => {
     if (e.key === 'Enter') {
       handleNextQuestion();
+    }
+  };
+
+  const handleRegister = () => {
+    const email = answers[0]; // Первый вопрос был о почте
+
+    if (password === confirmPassword) {
+      // Отправляем запрос на регистрацию
+      fetch('/createUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          // Действия при успешной регистрации
+        } else {
+          // Обработка ошибки регистрации
+        }
+      })
+      .catch((error) => {
+        console.error('Registration failed', error);
+        // Обработка ошибки сети или сервера
+      });
+    } else {
+      // Пароли не совпадают
     }
   };
 
@@ -217,9 +248,30 @@ export default function Home() {
         </div>
       )}
 
-      {shouldShowThankYou && (
+{shouldShowThankYou && (
         <div className={`flex flex-col items-center justify-center ml-8 mr-8 min-h-screen ${submitted ? 'fade-in' : 'fade-out'}`}>
-          <div className="text-3xl font-bold text-[#525375] text-center md:text-4xl">Заявка принята! Мы все проверим и вышлем вам дорожную карту</div>
+          <div className="text-3xl font-bold text-[#525375] text-center md:text-4xl">Заявка принята! Введите пароль для создания аккаунта, в нем будет статус вашей заявки</div>
+
+          {/* Новая форма для ввода пароля */}
+          <div className="mt-8">
+            <input
+              type="password"
+              placeholder="Введите пароль"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border w-full h-1/2 py-2 px-4 text-xl"
+            />
+            <input
+              type="password"
+              placeholder="Подтвердите пароль"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="border w-full h-1/2 py-2 px-4 text-xl mt-4"
+            />
+            <button onClick={handleRegister} className="bg-blue-500 text-white px-4 py-2 mt-4">
+              Зарегистрироваться
+            </button>
+          </div>
         </div>
       )}
     </>

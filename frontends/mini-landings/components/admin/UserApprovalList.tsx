@@ -49,8 +49,8 @@ const approveApplication = (id: number) => {
   
 
   return (
-    <div>
-    <h1 className="text-2xl font-bold mb-4">User Approval List</h1>
+    <div className="items-center">
+    <h1 className="text-2xl font-bold mb-4">Заявки в сборную</h1>
     <ul className="space-y-4">
       {applications.map((application) => (
         <li 
@@ -66,7 +66,7 @@ const approveApplication = (id: number) => {
               className="bg-pink-500 text-white px-4 py-1 rounded-full"
               onClick={() => approveApplication(application.id)}
             >
-              Approve
+              Одобрить
             </button>
           </div>
         </li>
@@ -77,18 +77,18 @@ const approveApplication = (id: number) => {
     {modalData && (
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
         <div className="bg-white p-8 rounded-lg w-1/2">
-          <h2 className="text-2xl font-bold mb-4">Application Details</h2>
-          <p>Email: {modalData.email}</p>
-          <p>Institute: {modalData.institute}</p>
-          <p>Course: {modalData.course}</p>
-          <p>Team Experience: {modalData.team_experience ? 'Yes' : 'No'}</p>
-          <p>Best Skill: {modalData.best_skill}</p>
-          <p>Full Name: {modalData.full_name}</p>
+          <h2 className="text-2xl font-bold mb-4">Детали заявки</h2>
+          <p>Почта: {modalData.email}</p>
+          <p>Институт: {modalData.institute}</p>
+          <p>Курс: {modalData.course}</p>
+          <p>Опыт командной работы: {modalData.team_experience ? 'Yes' : 'No'}</p>
+          <p>Лучший скилл: {modalData.best_skill}</p>
+          <p>ФИО: {modalData.full_name}</p>
           <button 
             className="mt-4 bg-red-500 text-white px-4 py-1 rounded-full"
             onClick={() => setModalData(null)}
           >
-            Close
+            Закрыть
           </button>
         </div>
       </div>
