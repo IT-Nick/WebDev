@@ -67,7 +67,7 @@ export default function Home() {
 
     if (password === confirmPassword) {
       // Отправляем запрос на регистрацию
-      fetch('/createUser', {
+      fetch('/general-management/createUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

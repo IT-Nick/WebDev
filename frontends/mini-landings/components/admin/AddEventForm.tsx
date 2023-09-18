@@ -14,7 +14,7 @@ const AddEventForm: React.FC = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Add Event</h1>
+      <h1 className="text-2xl font-bold mb-4">Добавить мероприятие</h1>
       <form onSubmit={(e) => e.preventDefault()}>
         <input
           type="text"
@@ -28,7 +28,7 @@ const AddEventForm: React.FC = () => {
           onClick={handleSubmit}
           className="bg-blue-500 text-white p-2"
         >
-          Submit
+          Добавить
         </button>
       </form>
     </div>
