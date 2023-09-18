@@ -99,7 +99,7 @@ func ListAuthUsers() ([]Auth, error) {
 	var authUsers []Auth
 	for rows.Next() {
 		var user Auth
-		err := rows.Scan(&user.ID, &user.Username, &user.PasswordHash)
+		err := rows.Scan(&user.ID, &user.Username, &user.PasswordHash, &user.IsApproved)
 		if err != nil {
 			return nil, err
 		}

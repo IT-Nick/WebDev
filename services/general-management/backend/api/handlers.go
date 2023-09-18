@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/IT-Nick/WebDev/services/general-management/backend/database"
 	"github.com/dgrijalva/jwt-go"
+	"log"
 	"net/http"
 	"time"
 )
@@ -109,11 +110,12 @@ type CreateUserRequest struct {
 func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	var requestData CreateUserRequest
 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		log.Printf("Error decoding request: %v", err) // Логируем подробности ошибки
 		return
 	}
 
-	email := requestData.Email // Изменили здесь
+	email := requestData.Email
 	password := requestData.Password
 
 	// Hash the provided password
@@ -121,14 +123,18 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	passwordHash := hex.EncodeToString(hash[:])
 
 	// Insert new user into Auth table
-	if err := database.InsertAuthUser(email, passwordHash); err != nil { // Изменили здесь
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := database.InsertAuthUser(email, passwordHash); err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Printf("Error inserting user: %v", err) // Логируем подробности ошибки
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	response := map[string]bool{"success": true}
-	json.NewEncoder(w).Encode(response)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		log.Printf("Error encoding response: %v", err) // Логируем подробности ошибки
+	}
 }
 
 // ApproveApplicationHandler - одобряет заявку, устанавливая IsApproved в true и удаляя из applications
