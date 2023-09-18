@@ -100,28 +100,28 @@ func ListAuthUsersHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(authUsers)
 }
 
+type CreateUserRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 // CreateUserHandler обрабатывает создание нового пользователя
 func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
-	var requestData map[string]string
+	var requestData CreateUserRequest
 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	email, ok1 := requestData["email"]
-	password, ok2 := requestData["password"]
-
-	if !ok1 || !ok2 {
-		http.Error(w, "Invalid request data", http.StatusBadRequest)
-		return
-	}
+	email := requestData.Email // Изменили здесь
+	password := requestData.Password
 
 	// Hash the provided password
 	hash := sha256.Sum256([]byte(password))
 	passwordHash := hex.EncodeToString(hash[:])
 
 	// Insert new user into Auth table
-	if err := database.InsertAuthUser(email, passwordHash); err != nil {
+	if err := database.InsertAuthUser(email, passwordHash); err != nil { // Изменили здесь
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
