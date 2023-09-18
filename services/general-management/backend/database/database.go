@@ -2,8 +2,6 @@ package database
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"time"
 
@@ -53,39 +51,33 @@ func ListApplications() ([]Application, error) {
 	return applications, nil
 }
 
-// ApproveApplication - одобряет заявку и создает учетные данные
-func ApproveApplication(id int, username, password string) error {
+// ApproveApplication - одобряет заявку, устанавливая IsApproved в true и удаляя из applications
+func ApproveApplication(id int) error {
 	tx, err := pool.Begin(context.Background())
 	if err != nil {
 		return err
 	}
 	defer tx.Rollback(context.Background())
 
-	var app Application
-	err = tx.QueryRow(context.Background(), "SELECT * FROM applications WHERE id = $1", id).Scan(&app.ID, &app.Email, &app.Institute, &app.Course, &app.TeamExperience, &app.BestSkill, &app.FullName)
+	// Обновляем значение IsApproved для заданного ID
+	_, err = tx.Exec(context.Background(), "UPDATE auth SET is_approved = TRUE WHERE id = $1", id)
 	if err != nil {
 		return err
 	}
 
-	// Хеширование пароля (простой пример, лучше использовать библиотеку типа bcrypt)
-	hash := sha256.Sum256([]byte(password))
-	passwordHash := hex.EncodeToString(hash[:])
-
-	_, err = tx.Exec(context.Background(), "INSERT INTO auth (username, password_hash) VALUES ($1, $2)", username, passwordHash)
-	if err != nil {
-		return err
-	}
-
+	// Удаляем соответствующую запись из таблицы applications
 	_, err = tx.Exec(context.Background(), "DELETE FROM applications WHERE id = $1", id)
 	if err != nil {
 		return err
 	}
 
+	// Фиксация транзакции
 	err = tx.Commit(context.Background())
-	return err
-	//Этот код также включает в себя транзакционную обработку, чтобы убедиться,
-	//что обе операции (вставка в auth и удаление из applications)
-	//будут выполнены успешно или не будут выполнены вообще.
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // ListAuthUsers - возвращает всех одобренных пользователей

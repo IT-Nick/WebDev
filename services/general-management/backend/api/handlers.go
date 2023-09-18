@@ -99,8 +99,6 @@ func ListAuthUsersHandler(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(authUsers)
 }
-
-// ApproveApplicationHandler обрабатывает одобрение заявок и создание учетных данных
 func ApproveApplicationHandler(w http.ResponseWriter, r *http.Request) {
 	var requestData map[string]interface{}
 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
@@ -111,26 +109,25 @@ func ApproveApplicationHandler(w http.ResponseWriter, r *http.Request) {
 	// Устанавливаем заголовок Content-Type
 	w.Header().Set("Content-Type", "application/json")
 
-	// Получаем id и учетные данные из JSON
-	idFloat, ok1 := requestData["id"].(float64) // JSON часто интерпретирует числа как float64
-	id := int(idFloat)
-	username, ok2 := requestData["username"].(string)
-	password, ok3 := requestData["password"].(string)
-
-	if !ok1 || !ok2 || !ok3 {
-		http.Error(w, "Invalid request data", http.StatusBadRequest)
+	// Получаем id из JSON
+	idFloat, ok := requestData["id"].(float64) // JSON часто интерпретирует числа как float64
+	if !ok {
+		http.Error(w, "Invalid request data: id required", http.StatusBadRequest)
 		return
 	}
 
-	if err := database.ApproveApplication(id, username, password); err != nil {
+	id := int(idFloat)
+
+	// Обновляем значение IsApproved в базе данных
+	if err := database.ApproveApplication(id); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	// Отправляем ответ
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"status": "approved"})
 }
-
 
 // CreateEventHandler обрабатывает создание нового мероприятия
 func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
