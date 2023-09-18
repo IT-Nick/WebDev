@@ -40,6 +40,8 @@ func NewRouter() *mux.Router {
 	router.HandleFunc("/api/applications/create", CreateApplicationHandler).Methods("POST")
 	// Авторизует пользователя в системе. (Новый)
 	router.HandleFunc("/api/users/auth", AuthUserHandler).Methods("POST")
+	// Создает пользователя
+	router.HandleFunc("/createUser", CreateUserHandler).Methods("POST")
 
 	// Маршруты API для администратора
 	// создает новое мероприятие.

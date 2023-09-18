@@ -80,6 +80,14 @@ func ApproveApplication(id int) error {
 	return nil
 }
 
+// InsertAuthUser - вставляет нового пользователя в таблицу Auth
+func InsertAuthUser(username, passwordHash string) error {
+	_, err := pool.Exec(context.Background(),
+		"INSERT INTO auth (username, password_hash, is_approved) VALUES ($1, $2, $3)",
+		username, passwordHash, false)
+	return err
+}
+
 // ListAuthUsers - возвращает всех одобренных пользователей
 func ListAuthUsers() ([]Auth, error) {
 	rows, err := pool.Query(context.Background(), "SELECT * FROM auth")

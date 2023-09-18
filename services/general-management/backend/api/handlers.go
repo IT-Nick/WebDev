@@ -99,6 +99,39 @@ func ListAuthUsersHandler(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(authUsers)
 }
+
+// CreateUserHandler обрабатывает создание нового пользователя
+func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
+	var requestData map[string]string
+	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	email, ok1 := requestData["email"]
+	password, ok2 := requestData["password"]
+
+	if !ok1 || !ok2 {
+		http.Error(w, "Invalid request data", http.StatusBadRequest)
+		return
+	}
+
+	// Hash the provided password
+	hash := sha256.Sum256([]byte(password))
+	passwordHash := hex.EncodeToString(hash[:])
+
+	// Insert new user into Auth table
+	if err := database.InsertAuthUser(email, passwordHash); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	response := map[string]bool{"success": true}
+	json.NewEncoder(w).Encode(response)
+}
+
+// ApproveApplicationHandler - одобряет заявку, устанавливая IsApproved в true и удаляя из applications
 func ApproveApplicationHandler(w http.ResponseWriter, r *http.Request) {
 	var requestData map[string]interface{}
 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
