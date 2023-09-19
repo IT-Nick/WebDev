@@ -152,7 +152,7 @@ func ListEvents() ([]Event, error) {
 	var events []Event
 	for rows.Next() {
 		var event Event
-		err := rows.Scan(&event.ID, &event.Title, &event.Context, &event.StartDate, &event.EndDate)
+		err := rows.Scan(&event.ID, &event.Title, &event.Context, &event.StartDate, &event.EndDate, &event.ImageURL) // Обновлено
 		if err != nil {
 			return nil, err
 		}
