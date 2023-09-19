@@ -272,7 +272,7 @@ export default function Home() {
                   {showPassword ? "Скрыть" : "Показать"}
                 </span>
               </div>
-            ))}
+            ))} 
 
             <button onClick={handleRegister} className="bg-[#525375] text-white font-bold py-2 px-4 rounded w-full h-16 text-2xl hover:bg-white hover:text-[#525375] hover:border-[#525375] border-2 transition duration-300 ease-in-out above-background">
               Зарегистрироваться

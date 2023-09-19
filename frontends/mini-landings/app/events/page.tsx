@@ -7,71 +7,24 @@ import { useLoading } from '@/components/Providers/LoadingProvider';
 import DateSlider from '@/components/shared/events/DateSlider';
 import Image from 'next/image';
 
+interface Card {
+  id: number;
+  title: string;
+  context: string;
+  startDate: string;
+  endDate: string;
+  ImageURL: string;
+}
+
+
 export default function Home() {
   const { loading, setLoading } = useLoading();
   const [search, setSearch] = useState("");
-  const [startDate, setStartDate] = useState("");
+  const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
   const [endDate, setEndDate] = useState("");
   const [nonSelectedCards, setNonSelectedCards] = useState<number[]>([]);
 
-  const [cards, setCards] = useState([
-    {
-      id: 1,
-      title: 'Я - Профессионал',
-      content: ' ',
-      startDate: '2023-10-01',
-      endDate: '2023-11-30',
-      imgSrc: '/assets/hero.svg'
-    },
-    {
-      id: 2,
-      title: 'Хакатон Моспром',
-      content: ' ',
-      startDate: '2023-12-05',
-      endDate: '2023-12-07',
-      imgSrc: '/assets/hero.svg'
-    },
-    {
-      id: 3,
-      title: 'Лидеры цифровой трансформации',
-      content: ' ',
-      startDate: '2024-01-10',
-      endDate: '2024-02-10',
-      imgSrc: '/assets/hero.svg'
-    },
-    {
-      id: 4,
-      title: 'ICPC',
-      content: ' ',
-      startDate: '2024-03-20',
-      endDate: '2024-03-25',
-      imgSrc: '/assets/hero.svg'
-    },
-    {
-      id: 5,
-      title: 'CASE-IN',
-      content: ' ',
-      startDate: '2023-09-15',
-      endDate: '2023-10-15',
-      imgSrc: '/assets/hero.svg'
-    },
-    {
-      id: 6,
-      title: 'Кубок Росатома',
-      content: ' ',
-      startDate: '2024-05-05',
-      endDate: '2024-06-05',
-      imgSrc: '/assets/hero.svg'
-    },
-    {
-      id: 7,
-      title: 'Кубок МЭИ',
-      content: ' ',
-      startDate: '2024-02-01',
-      endDate: '2024-02-28',
-      imgSrc: '/assets/hero.svg'
-    }
-  ]);
+  const [cards, setCards] = useState<Card[]>([]);
 
   const humanReadableDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -88,6 +41,18 @@ export default function Home() {
   }>(null);
 
   useEffect(() => {
+    // Функция для получения данных с бэкенда
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/events/list'); // Путь к вашему API
+        const data = await response.json();
+        setCards(data); // Обновляем состояние cards
+      } catch (error) {
+        console.error('Ошибка при загрузке данных:', error);
+      }
+    };
+
+    fetchData(); // Вызываем функцию
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -106,7 +71,7 @@ export default function Home() {
     };
   }, [setLoading]);
 
-  const filteredCards = cards.filter(card => {
+  const filteredCards: Card[] = cards.filter(card => {
     const matchesSearch = card.title.toLowerCase().includes(search.toLowerCase());
     if (startDate || endDate) {
       return matchesSearch && (
@@ -198,9 +163,9 @@ export default function Home() {
               className={`card ${nonSelectedCards.includes(card.id) ? 'hide-card' : ''}`}
               onClick={() => handleClickCard(card)}
             >
-              <Image src={card.imgSrc} alt={card.title} width={300} height={300} />
+              <Image src={card.ImageURL} alt={card.title} width={300} height={300} /> {/* Обновлено */}
               <h3>{card.title}</h3>
-              <p className="content-text">{card.content}</p> {/* Добавленный класс */}
+              <p className="content-text">{card.context}</p> {/* Обновлено: изменил content на context */}
               <p>Прием заявок с: {humanReadableDate(card.startDate)}</p>
               <p>Прием заявок до: {humanReadableDate(card.endDate)}</p>
             </div>
