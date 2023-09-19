@@ -5,6 +5,10 @@
   appearance: none;
 }
 
+.above-background {
+  z-index: 1000; /* или любое другое большое число, которое будет выше, чем у вашего фона */
+}
+
 .progress-bar {
   transition: width 0.5s ease-in-out;
 }

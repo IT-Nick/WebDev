@@ -2,99 +2,101 @@ import React, { useEffect, useState } from 'react';
 
 // Определим интерфейс для типа Application
 interface Application {
-  id: number;
-  email: string;
-  institute: string;
-  course: number;
-  team_experience: boolean;
-  best_skill: string;
-  full_name: string;
+    id: number;
+    email: string;
+    institute: string;
+    course: number;
+    team_experience: boolean;
+    best_skill: string;
+    full_name: string;
 }
 
 // Компонент для списка пользователей
 const UserApprovalList: React.FC = () => {
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [modalData, setModalData] = useState<Application | null>(null);
+    const [applications, setApplications] = useState<Application[]>([]);
+    const [modalData, setModalData] = useState<Application | null>(null);
 
-  // Загрузим данные с сервера
-  useEffect(() => {
-    fetch('/general-management/api/applications/list')
-      .then((res) => res.json())
-      .then((data) => setApplications(data))
-      .catch((err) => console.error(err));
-  }, []);
-// Одобрить заявку
-const approveApplication = (id: number) => {
-    const payload = JSON.stringify({ id });
-  
-    console.log("Sending to server:", payload);
-  
-    fetch('/general-management/api/applications/approve', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: payload,
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Received from server:", data);
-  
-      if (data.status === 'approved') {
-        setApplications(applications.filter((app) => app.id !== id));
-      }
-    })
-    .catch((err) => console.error(err));
-  };
-  
+    // Загрузим данные с сервера
+    useEffect(() => {
+        fetch('/general-management/api/applications/list')
+            .then((res) => res.json())
+            .then((data) => setApplications(data))
+            .catch((err) => console.error(err));
+    }, []);
+    // Одобрить заявку
+    const approveApplication = (event: React.MouseEvent, id: number) => {
+        event.stopPropagation();  // Останавливаем всплытие события
 
-  return (
-    <div className="items-center">
-    <h1 className="text-2xl font-bold mb-4">Заявки в сборную</h1>
-    <ul className="space-y-4">
-      {applications.map((application) => (
-        <li 
-          key={application.id} 
-          className="shadow-md hover:shadow-lg p-4 border rounded-lg cursor-pointer"
-          onClick={() => setModalData(application)}
-        >
-          <div className="flex justify-between items-center">
-            <div>
-              {application.full_name} ({application.email})
-            </div>
-            <button 
-              className="bg-pink-500 text-white px-4 py-1 rounded-full"
-              onClick={() => approveApplication(application.id)}
-            >
-              Одобрить
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
+        const payload = JSON.stringify({ id });
 
-    {/* Modal */}
-    {modalData && (
-      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-8 rounded-lg w-1/2">
-          <h2 className="text-2xl font-bold mb-4">Детали заявки</h2>
-          <p>Почта: {modalData.email}</p>
-          <p>Институт: {modalData.institute}</p>
-          <p>Курс: {modalData.course}</p>
-          <p>Опыт командной работы: {modalData.team_experience ? 'Yes' : 'No'}</p>
-          <p>Лучший скилл: {modalData.best_skill}</p>
-          <p>ФИО: {modalData.full_name}</p>
-          <button 
-            className="mt-4 bg-red-500 text-white px-4 py-1 rounded-full"
-            onClick={() => setModalData(null)}
-          >
-            Закрыть
-          </button>
+        console.log("Sending to server:", payload);
+
+        fetch('/general-management/api/applications/approve', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: payload,
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("Received from server:", data);
+
+                if (data.status === 'approved') {
+                    setApplications(applications.filter((app) => app.id !== id));
+                }
+            })
+            .catch((err) => console.error(err));
+    };
+
+
+    return (
+        <div className="items-center">
+            <h1 className="text-2xl font-bold mb-4">Заявки в сборную</h1>
+            <ul className="space-y-4">
+                {applications.map((application) => (
+                    <li
+                        key={application.id}
+                        className="shadow-md hover:shadow-lg p-4 border rounded-lg cursor-pointer"
+                        onClick={() => setModalData(application)}
+                    >
+                        <div className="flex justify-between items-center">
+                            <div>
+                                {application.full_name} ({application.email})
+                            </div>
+                            <button
+                                className="bg-pink-500 text-white px-4 py-1 rounded-full"
+                                onClick={(event) => approveApplication(event, application.id)}  // передаем событие и ID
+                            >
+                                Одобрить
+                            </button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+
+            {/* Modal */}
+            {modalData && (
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-8 rounded-lg w-1/2">
+                        <h2 className="text-2xl font-bold mb-4">Детали заявки</h2>
+                        <p>Почта: {modalData.email}</p>
+                        <p>Институт: {modalData.institute}</p>
+                        <p>Курс: {modalData.course}</p>
+                        <p>Опыт командной работы: {modalData.team_experience ? 'Yes' : 'No'}</p>
+                        <p>Лучший скилл: {modalData.best_skill}</p>
+                        <p>ФИО: {modalData.full_name}</p>
+                        <button
+                            className="mt-4 bg-red-500 text-white px-4 py-1 rounded-full"
+                            onClick={() => setModalData(null)}
+                        >
+                            Закрыть
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
-      </div>
-    )}
-  </div>
-  );
+    );
 };
 
 export default UserApprovalList;

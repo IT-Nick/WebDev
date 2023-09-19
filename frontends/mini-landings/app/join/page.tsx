@@ -74,18 +74,18 @@ export default function Home() {
         },
         body: JSON.stringify({ email, password }),
       })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          // Действия при успешной регистрации
-        } else {
-          // Обработка ошибки регистрации
-        }
-      })
-      .catch((error) => {
-        console.error('Registration failed', error);
-        // Обработка ошибки сети или сервера
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            // Действия при успешной регистрации
+          } else {
+            // Обработка ошибки регистрации
+          }
+        })
+        .catch((error) => {
+          console.error('Registration failed', error);
+          // Обработка ошибки сети или сервера
+        });
     } else {
       // Пароли не совпадают
     }
@@ -248,32 +248,42 @@ export default function Home() {
         </div>
       )}
 
-{shouldShowThankYou && (
-        <div className={`flex flex-col items-center justify-center ml-8 mr-8 min-h-screen ${submitted ? 'fade-in' : 'fade-out'}`}>
-          <div className="text-3xl font-bold text-[#525375] text-center md:text-4xl">Заявка принята! Введите пароль для создания аккаунта, в нем будет статус вашей заявки</div>
+      {shouldShowThankYou && (
+        <div className={`flex flex-col items-center justify-center ml-8 mr-8 min-h-screen ${submitted ? 'fade-in' : 'fade-out'} above-background`}>
+          <div className="text-3xl font-bold text-[#525375] text-center md:text-4xl">
+            Заявка принята! Введите пароль для создания аккаунта, в нем будет статус вашей заявки
+          </div>
 
-          {/* Новая форма для ввода пароля */}
           <div className="mt-8">
-            <input
-              type="password"
-              placeholder="Введите пароль"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border w-full h-1/2 py-2 px-4 text-xl"
-            />
-            <input
-              type="password"
-              placeholder="Подтвердите пароль"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="border w-full h-1/2 py-2 px-4 text-xl mt-4"
-            />
+            {/* Используем аналогичные стили и логику */}
+            <div className="relative">
+              <input
+                type="password"
+                placeholder="Введите пароль"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="border w-full h-16 py-8 px-4 text-2xl"
+                style={{ borderWidth: '2px', borderColor: '#525375', color: '#525375' }}
+              />
+            </div>
+            <div className="relative mt-4">
+              <input
+                type="password"
+                placeholder="Подтвердите пароль"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="border w-full h-16 py-8 px-4 text-2xl"
+                style={{ borderWidth: '2px', borderColor: '#525375', color: '#525375' }}
+              />
+            </div>
+
             <button onClick={handleRegister} className="bg-blue-500 text-white px-4 py-2 mt-4">
               Зарегистрироваться
             </button>
           </div>
         </div>
       )}
+
     </>
   );
 }
