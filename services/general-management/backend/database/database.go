@@ -61,8 +61,16 @@ func ApproveApplication(id int) error {
 	}
 	defer tx.Rollback(context.Background())
 
-	// Обновляем значение IsApproved для заданного ID
-	result, err := tx.Exec(context.Background(), "UPDATE auth SET is_approved = TRUE WHERE id = $1", id)
+	// Получаем email по заданному ID из таблицы applications
+	var email string
+	err = tx.QueryRow(context.Background(), "SELECT email FROM applications WHERE id = $1", id).Scan(&email)
+	if err != nil {
+		log.Printf("Error fetching email: %v", err)
+		return err
+	}
+
+	// Обновляем значение IsApproved для заданного email
+	result, err := tx.Exec(context.Background(), "UPDATE auth SET is_approved = TRUE WHERE username = $1", email)
 	if err != nil {
 		log.Printf("Error updating is_approved: %v", err)
 		return err
