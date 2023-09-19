@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -55,28 +56,37 @@ func ListApplications() ([]Application, error) {
 func ApproveApplication(id int) error {
 	tx, err := pool.Begin(context.Background())
 	if err != nil {
+		log.Printf("Error starting transaction: %v", err)
 		return err
 	}
 	defer tx.Rollback(context.Background())
 
 	// Обновляем значение IsApproved для заданного ID
-	_, err = tx.Exec(context.Background(), "UPDATE auth SET is_approved = TRUE WHERE id = $1", id)
+	result, err := tx.Exec(context.Background(), "UPDATE auth SET is_approved = TRUE WHERE id = $1", id)
 	if err != nil {
+		log.Printf("Error updating is_approved: %v", err)
 		return err
 	}
+	affectedRows := result.RowsAffected()
+	log.Printf("Rows affected while updating is_approved: %d", affectedRows)
 
 	// Удаляем соответствующую запись из таблицы applications
-	_, err = tx.Exec(context.Background(), "DELETE FROM applications WHERE id = $1", id)
+	result, err = tx.Exec(context.Background(), "DELETE FROM applications WHERE id = $1", id)
 	if err != nil {
+		log.Printf("Error deleting application: %v", err)
 		return err
 	}
+	affectedRows = result.RowsAffected()
+	log.Printf("Rows affected while deleting from applications: %d", affectedRows)
 
 	// Фиксация транзакции
 	err = tx.Commit(context.Background())
 	if err != nil {
+		log.Printf("Error committing transaction: %v", err)
 		return err
 	}
 
+	log.Println("Transaction committed successfully.")
 	return nil
 }
 
