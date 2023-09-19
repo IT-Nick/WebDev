@@ -22,6 +22,7 @@ export default function Home() {
   const selectClassName = answers[currentQuestion] === 'да' ? 'hide-arrow' : '';
   const [password, setPassword] = useState(''); // Новое состояние для пароля
   const [confirmPassword, setConfirmPassword] = useState(''); // Новое состояние для подтверждения пароля
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -255,29 +256,25 @@ export default function Home() {
           </div>
 
           <div className="mt-8">
-            {/* Используем аналогичные стили и логику */}
-            <div className="relative">
-              <input
-                type="password"
-                placeholder="Введите пароль"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border w-full h-16 py-8 px-4 text-2xl"
-                style={{ borderWidth: '2px', borderColor: '#525375', color: '#525375' }}
-              />
-            </div>
-            <div className="relative mt-4">
-              <input
-                type="password"
-                placeholder="Подтвердите пароль"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="border w-full h-16 py-8 px-4 text-2xl"
-                style={{ borderWidth: '2px', borderColor: '#525375', color: '#525375' }}
-              />
-            </div>
+            {["Введите пароль", "Подтвердите пароль"].map((placeholder, index) => (
+              <div className="relative mb-4" key={index}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder={placeholder}
+                  value={index === 0 ? password : confirmPassword}
+                  onChange={(e) => index === 0 ? setPassword(e.target.value) : setConfirmPassword(e.target.value)}
+                  className="border w-full h-1/2 py-2 px-4 text-xl"
+                />
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer text-gray-400"
+                >
+                  {showPassword ? "Скрыть" : "Показать"}
+                </span>
+              </div>
+            ))}
 
-            <button onClick={handleRegister} className="bg-blue-500 text-white px-4 py-2 mt-4">
+            <button onClick={handleRegister} className="bg-[#525375] text-white font-bold py-2 px-4 rounded w-full h-16 text-2xl hover:bg-white hover:text-[#525375] hover:border-[#525375] border-2 transition duration-300 ease-in-out above-background">
               Зарегистрироваться
             </button>
           </div>
