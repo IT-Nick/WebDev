@@ -44,7 +44,7 @@ export default function Home() {
     // Функция для получения данных с бэкенда
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/events/list'); // Путь к вашему API
+        const response = await fetch('/general-management/api/events/list'); // Путь к вашему API
         const data = await response.json();
         setCards(data); // Обновляем состояние cards
       } catch (error) {
