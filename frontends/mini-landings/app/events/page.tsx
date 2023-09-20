@@ -11,10 +11,11 @@ interface Card {
   id: number;
   title: string;
   context: string;
-  startDate: string;
-  endDate: string;
-  ImageURL: string;
+  start_date: string;
+  end_date: string;
+  image_url: string;
 }
+
 
 
 export default function Home() {
@@ -25,34 +26,37 @@ export default function Home() {
   const [nonSelectedCards, setNonSelectedCards] = useState<number[]>([]);
 
   const [cards, setCards] = useState<Card[]>([]);
-
+  
   const humanReadableDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(date);
-  }
+    try {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(date);
+    } catch (error) {
+      console.error("Ошибка при преобразовании даты:", error);
+      return "Некорректная дата";
+    }
+  };
+  
 
 
-  const [expandedCard, setExpandedCard] = useState<null | {
-    id: number;
-    title: string;
-    content: string;
-    startDate: string;
-    endDate: string;
-  }>(null);
+  const [expandedCard, setExpandedCard] = useState<Card | null>(null);
 
   useEffect(() => {
     // Функция для получения данных с бэкенда
     const fetchData = async () => {
       try {
-        const response = await fetch('/general-management/api/events/list'); // Путь к вашему API
+        const response = await fetch('/general-management/api/events/list');
         const data = await response.json();
-        setCards(data); // Обновляем состояние cards
+        setCards(data);
+        console.log("Загруженные данные:", data);  // Для отладки
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
       }
     };
+    
 
-    fetchData(); // Вызываем функцию
+    fetchData();
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -75,11 +79,13 @@ export default function Home() {
     const matchesSearch = card.title.toLowerCase().includes(search.toLowerCase());
     if (startDate || endDate) {
       return matchesSearch && (
-        (startDate ? card.startDate >= startDate : true) && (endDate ? card.endDate <= endDate : true)
+        (startDate ? card.start_date >= startDate : true) &&
+        (endDate ? card.end_date <= endDate : true)
       );
     }
     return matchesSearch;
   });
+
 
 
 
@@ -133,9 +139,9 @@ export default function Home() {
         <div className="expanded-container">
           <button className="close-button" onClick={handleCloseCard}>X</button>
           <h3>{expandedCard.title}</h3>
-          <p>{expandedCard.content}</p>
-          <p>Прием заявок с: {humanReadableDate(expandedCard.startDate)}</p>
-          <p>Прием заявок до: {humanReadableDate(expandedCard.endDate)}</p>
+          <p>{expandedCard.context}</p>
+          <p>Прием заявок с: {humanReadableDate(expandedCard.start_date)}</p>
+          <p>Прием заявок до: {humanReadableDate(expandedCard.end_date)}</p>
 
         </div>
       )}
@@ -163,11 +169,11 @@ export default function Home() {
               className={`card ${nonSelectedCards.includes(card.id) ? 'hide-card' : ''}`}
               onClick={() => handleClickCard(card)}
             >
-              <Image src={card.ImageURL} alt={card.title} width={300} height={300} /> {/* Обновлено */}
+              <Image src={card.image_url} alt={card.title} width={300} height={300} />
               <h3>{card.title}</h3>
               <p className="content-text">{card.context}</p> {/* Обновлено: изменил content на context */}
-              <p>Прием заявок с: {humanReadableDate(card.startDate)}</p>
-              <p>Прием заявок до: {humanReadableDate(card.endDate)}</p>
+              <p>Прием заявок с: {humanReadableDate(card.start_date)}</p>
+              <p>Прием заявок до: {humanReadableDate(card.end_date)}</p>
             </div>
           ))}
         </div>
