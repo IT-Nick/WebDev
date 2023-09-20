@@ -7,7 +7,16 @@ interface Props {
 }
 
 const DateSlider: React.FC<Props> = ({ setStartDate, setEndDate }) => {
-    const [startPos, setStartPos] = useState(0);
+
+    const getPosFromDate = (dateString: string) => {
+        const startDate = new Date(2023, 8, 1);
+        const endDate = new Date(dateString);
+        const timeDiff = endDate.getTime() - startDate.getTime();
+        const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
+        return (dayDiff / 365) * 100;
+    };
+
+    const [startPos, setStartPos] = useState(getPosFromDate(new Date().toISOString().slice(0, 10)));
     const [endPos, setEndPos] = useState(100);
     const [sliderWidth, setSliderWidth] = useState(0);
     const sliderRef = useRef<HTMLDivElement>(null);
