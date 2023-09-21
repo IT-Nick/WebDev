@@ -13,8 +13,8 @@
   
   .move-up-logo {
     position: relative;
-    transform: translateX(-20em);
-    transition: transform 1s ease-in-out;
+    opacity: 0; 
+    transition: opacity 1s ease-in-out;
   }
   
   .move-up-menu {

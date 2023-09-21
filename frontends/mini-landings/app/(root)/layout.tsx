@@ -19,12 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-    <body className={`${inter.className} transition-all duration-500 ease-in-out`}> 
-      <LoadingProvider>
-        <Navbar />
-        {children}
-      </LoadingProvider>
-    </body>
-  </html>
+      <body className={`${inter.className} transition-all duration-500 ease-in-out`}>
+        <LoadingProvider>
+          <Navbar />
+          {children}
+        </LoadingProvider>
+      </body>
+    </html>
   )
 }

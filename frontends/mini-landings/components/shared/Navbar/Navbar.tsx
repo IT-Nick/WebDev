@@ -30,9 +30,9 @@ export default function Navbar() {
 
   return (
       <nav
-        className="fixed top-0 left-0 w-full z-50"
+        className="fixed top-0 left-0 right-0 z-50"
       >
-        <div className="container mx-auto py-2 flex items-center justify-between">
+        <div className="container py-2 flex items-center justify-between">
           <div className={`${scrolling ? 'move-up-logo' : ''}`}>
           <Link href="/">
                 <Image 
@@ -43,9 +43,6 @@ export default function Navbar() {
                   className={logoClass}
                 />
             </Link>
-          </div>
-          <div className="lg:hidden">
-            {/* Мобильное меню */}
           </div>
           <div className={`${scrolling ? 'move-up-menu' : ''}`}>
             <Menu />

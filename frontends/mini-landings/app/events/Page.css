@@ -74,7 +74,7 @@
 
 .centered-text {
   background: linear-gradient(90deg, #f87171, #2563eb);
-  -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   /* делаем текст белым */
   text-align: center;
@@ -141,3 +141,20 @@ input[type="text"] {
   font-size: 24px;
   cursor: pointer;
 }
+
+
+/* Медиа-запрос для экранов с шириной менее 700px */
+@media (max-width: 700px) {
+
+  .centered-text {
+    font-size: 3rem;  /* Уменьшенный размер шрифта */
+
+  }
+  .small-text {
+    color: #525375;
+    /* делаем текст белым */
+    font-size: 1.5rem;
+    /* установка размера шрифта чуть меньше */
+  }
+}
+

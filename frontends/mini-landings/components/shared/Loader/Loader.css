@@ -45,7 +45,7 @@
   
   @keyframes fadeOutToLogo {
     to {
-      transform: translateY(-100%) translateX(-100%);
+      transform: translateY(0%) translateX(0%);
       opacity: 0;
       width: 0;
       height: 0;

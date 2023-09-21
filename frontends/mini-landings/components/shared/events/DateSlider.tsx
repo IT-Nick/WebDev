@@ -143,14 +143,13 @@ const DateSlider: React.FC<Props> = ({ setStartDate, setEndDate }) => {
             >
                 <div className="date-slider-label">{humanReadableDate(getDateFromPos(startPos))}</div>
             </div>
-            <div
+            {/* <div
                 className={`date-slider-thumb ${isActiveEnd ? 'active' : ''}`}
                 style={{ left: `${endPos}%` }}
                 onMouseDown={() => handleMouseDown('end')}
                 onTouchStart={() => handleTouchStart('end')}  // и эту строку
             >
-                <div className="date-slider-label">{humanReadableDate(getDateFromPos(endPos))}</div>
-            </div>
+            </div> */}
 
         </div>
     );

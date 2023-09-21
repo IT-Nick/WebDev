@@ -22,8 +22,7 @@ interface Card {
 export default function Home() {
   const { loading, setLoading } = useLoading();
   const [search, setSearch] = useState("");
-  const moscowDate = new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow" });
-  const [startDate, setStartDate] = useState(moscowDate.split(",")[0].split("/").reverse().join("-"));
+  const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
   const [endDate, setEndDate] = useState("");
   const [nonSelectedCards, setNonSelectedCards] = useState<number[]>([]);
 
@@ -47,7 +46,7 @@ export default function Home() {
     // Функция для получения данных с бэкенда
     const fetchData = async () => {
       try {
-        const response = await fetch('/general-management/api/events/list');
+        const response = await fetch('https://team.mpei.ru/general-management/api/events/list');
         const data = await response.json();
         setCards(data);
         console.log("Загруженные данные:", data);  // Для отладки
@@ -168,7 +167,7 @@ export default function Home() {
               <p className="text-gray-600">{expandedCard.content}</p>
             </div>
 
-            <button className="absolute top-4 right-4 close-button" onClick={handleCloseCard}>X</button>
+            <button className="absolute top-4 right-4 close-button" onClick={handleCloseCard}>x</button>
 
           </div>
         </div>
@@ -177,11 +176,11 @@ export default function Home() {
 
 
 
-      <div className=" w-full">
+      <div className="">
         <div className="centered-container">
           <div>
             <h1 className="centered-text">Твоё резюме начинается здесь</h1>
-            <p className="small-text centered-text">Мы постоянно мониторим самые интересные мероприятия и собираем их в одном месте.</p>
+            {/* <p className="small-text centered-text">Мы постоянно мониторим самые интересные мероприятия и собираем их в одном месте.</p> */}
             <input
               className='rounded-2xl'
               type="text"
