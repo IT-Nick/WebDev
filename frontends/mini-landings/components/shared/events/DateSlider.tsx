@@ -9,8 +9,8 @@ interface Props {
 const DateSlider: React.FC<Props> = ({ setStartDate, setEndDate }) => {
 
     const getPosFromDate = (dateString: string) => {
-        const startDate = new Date(2023, 8, 1);
-        const endDate = new Date(dateString);
+        const startDate = new Date(Date.UTC(2023, 8, 1));
+        const endDate = new Date(dateString + "T00:00:00Z");  // Подразумеваем UTC
         const timeDiff = endDate.getTime() - startDate.getTime();
         const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
         return (dayDiff / 365) * 100;
@@ -37,8 +37,8 @@ const DateSlider: React.FC<Props> = ({ setStartDate, setEndDate }) => {
 
 
     const getDateFromPos = (pos: number) => {
-        const date = new Date(2023, 8, 1);
-        date.setDate(date.getDate() + Math.floor((pos / 100) * 365));
+        const date = new Date(Date.UTC(2023, 8, 1));
+        date.setUTCDate(date.getUTCDate() + Math.floor((pos / 100) * 365));
         return date.toISOString().slice(0, 10);
     };
 
@@ -131,7 +131,7 @@ const DateSlider: React.FC<Props> = ({ setStartDate, setEndDate }) => {
             setIsActiveEnd(true);
         }
     };
-    
+
 
     return (
         <div ref={sliderRef} className="date-slider-container">

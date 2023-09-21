@@ -22,7 +22,8 @@ interface Card {
 export default function Home() {
   const { loading, setLoading } = useLoading();
   const [search, setSearch] = useState("");
-  const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
+  const moscowDate = new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow" });
+  const [startDate, setStartDate] = useState(moscowDate.split(",")[0].split("/").reverse().join("-"));
   const [endDate, setEndDate] = useState("");
   const [nonSelectedCards, setNonSelectedCards] = useState<number[]>([]);
 
@@ -85,7 +86,7 @@ export default function Home() {
       (!endDate || card.start_date <= endDate)
     );
   });
-  
+
 
 
 
