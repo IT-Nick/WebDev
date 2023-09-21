@@ -11,10 +11,10 @@ function FooterBlack() {
       </p>
 
       <a
-        href="https://team.mpei.ru/events"
+        href="https://team.mpei.ru/join"
         className="inline-block px-20 py-8 mt-8 text-xl font-bold text-[#525375] border border-[#525375] hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500"
       >
-        Выбрать мероприятие
+        Присоединиться
       </a>
     </div>
 
