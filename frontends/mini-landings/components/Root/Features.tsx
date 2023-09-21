@@ -3,14 +3,14 @@ const Features = () => {
   return (
 <section className="">
   <div
-    className="mx-auto max-w-screen-xl px-4 py-8 sm:py-12 sm:px-6 lg:py-16 lg:px-8"
+    className="mx-auto px-4 py-8 sm:py-12 sm:px-6 lg:py-16 lg:px-8"
   >
     <div className="mx-auto max-w-3xl text-center">
-      <h2 className="text-5xl font-bold text-[#525375] sm:text-6xl">
+      <h2 className="text-2xl font-bold text-[#525375] md:text-5xl">
           Интеллектуальная сборная <span className="text-pink-600">МЭИ</span> это
       </h2>
 
-      <p className="mt-4 text-[#525375] sm:text-2xl">
+      <p className="mt-4 text-[#525375] text-xs md:text-2xl">
         студенческое сообщество для тех, у кого есть <span className="text-pink-600 font-bold">мотивация</span> к саморазвитию и <span className="font-bold text-pink-600">амбиции</span> к самореализации
       </p>
     </div>
