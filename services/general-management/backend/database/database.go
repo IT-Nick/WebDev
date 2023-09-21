@@ -134,10 +134,10 @@ func GetPasswordHashByUsername(username string) (string, error) {
 }
 
 // InsertEvent - вставляет новое мероприятие в таблицу
-func InsertEvent(title, eventContext string, startDate, endDate time.Time) error {
+func InsertEvent(title, eventContext, content string, startDate, endDate time.Time) error {
 	_, err := pool.Exec(context.Background(),
-		"INSERT INTO events (title, context, start_date, end_date) VALUES ($1, $2, $3, $4)",
-		title, eventContext, startDate, endDate)
+		"INSERT INTO events (title, context, content, start_date, end_date) VALUES ($1, $2, $3, $4, $5)",
+		title, eventContext, content, startDate, endDate)
 	return err
 }
 
@@ -152,7 +152,7 @@ func ListEvents() ([]Event, error) {
 	var events []Event
 	for rows.Next() {
 		var event Event
-		err := rows.Scan(&event.ID, &event.Title, &event.Context, &event.StartDate, &event.EndDate, &event.ImageURL) // Обновлено
+		err := rows.Scan(&event.ID, &event.Title, &event.Context, &event.Content, &event.StartDate, &event.EndDate, &event.ImageURL) // Обновлено
 		if err != nil {
 			return nil, err
 		}

@@ -23,6 +23,7 @@ type Event struct {
 	ID        int       `json:"id"`
 	Title     string    `json:"title"`
 	Context   string    `json:"context"`
+	Content   string    `json:"content"`
 	StartDate time.Time `json:"start_date"`
 	EndDate   time.Time `json:"end_date"`
 	ImageURL  string    `json:"image_url"` // Новое поле
