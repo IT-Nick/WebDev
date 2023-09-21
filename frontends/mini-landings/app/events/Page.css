@@ -146,9 +146,11 @@ input[type="text"] {
 /* Медиа-запрос для экранов с шириной менее 700px */
 @media (max-width: 700px) {
 
-  .centered-text {
-    font-size: 3rem;  /* Уменьшенный размер шрифта */
-
+  .centered-container h1 {
+    font-size: 1.89rem;
+    /* очень большой текст */
+    font-weight: bold;
+    /* жирный текст */
   }
   .small-text {
     color: #525375;
