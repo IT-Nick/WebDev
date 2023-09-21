@@ -11,6 +11,7 @@ interface Card {
   id: number;
   title: string;
   context: string;
+  content: string;
   start_date: string;
   end_date: string;
   image_url: string;
@@ -26,7 +27,7 @@ export default function Home() {
   const [nonSelectedCards, setNonSelectedCards] = useState<number[]>([]);
 
   const [cards, setCards] = useState<Card[]>([]);
-  
+
   const humanReadableDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -36,7 +37,7 @@ export default function Home() {
       return "Некорректная дата";
     }
   };
-  
+
 
 
   const [expandedCard, setExpandedCard] = useState<Card | null>(null);
@@ -45,7 +46,7 @@ export default function Home() {
     // Функция для получения данных с бэкенда
     const fetchData = async () => {
       try {
-        const response = await fetch('/general-management/api/events/list');
+        const response = await fetch('https://team.mpei.ru/general-management/api/events/list');
         const data = await response.json();
         setCards(data);
         console.log("Загруженные данные:", data);  // Для отладки
@@ -53,7 +54,7 @@ export default function Home() {
         console.error('Ошибка при загрузке данных:', error);
       }
     };
-    
+
 
     fetchData();
 
@@ -75,17 +76,16 @@ export default function Home() {
     };
   }, [setLoading]);
 
+
+  //если вы выберете дату начала, например, 15 сентября, и дату окончания, например, 25 сентября, мероприятие, которое началось 10 сентября и закончилось 20 сентября, будет отображаться. Если вы передвинете начальную дату до 21 сентября, мероприятие исчезнет, потому что его конечная дата меньше вашей выбранной начальной даты.
   const filteredCards: Card[] = cards.filter(card => {
     const matchesSearch = card.title.toLowerCase().includes(search.toLowerCase());
-    if (startDate || endDate) {
-      return matchesSearch && (
-        (startDate ? card.start_date >= startDate : true) &&
-        (endDate ? card.end_date <= endDate : true)
-      );
-    }
-    return matchesSearch;
+    return matchesSearch && (
+      (!startDate || card.end_date >= startDate) &&
+      (!endDate || card.start_date <= endDate)
+    );
   });
-
+  
 
 
 
@@ -114,6 +114,8 @@ export default function Home() {
           }
         });
       });
+      disableBodyScroll();
+
     }, 350); // Задержка в 400 миллисекунд будет совпадать с временем анимации в CSS
   };
 
@@ -127,7 +129,16 @@ export default function Home() {
     setTimeout(() => {
       setExpandedCard(null);
     }, 400);
+    enableBodyScroll();
   };
+
+  const disableBodyScroll = () => {
+    document.body.style.overflow = 'hidden';
+  }
+
+  const enableBodyScroll = () => {
+    document.body.style.overflow = '';
+  }
 
   return (
     <>
@@ -136,15 +147,34 @@ export default function Home() {
       </div>
 
       {expandedCard && (
-        <div className="expanded-container">
-          <button className="close-button" onClick={handleCloseCard}>X</button>
-          <h3>{expandedCard.title}</h3>
-          <p>{expandedCard.context}</p>
-          <p>Прием заявок с: {humanReadableDate(expandedCard.start_date)}</p>
-          <p>Прием заявок до: {humanReadableDate(expandedCard.end_date)}</p>
+        <div className="expanded-container fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+          <div className="expanded-content flex flex-col md:flex-row bg-white overflow-y-auto w-full max-w-screen-lg h-full md:h-auto">
 
+            {/* Левый блок для изображения */}
+            <div className="flex-none w-full md:w-1/2 h-half">
+              <Image src={expandedCard.image_url} alt={expandedCard.title} layout="responsive" objectFit="cover" width={400} height={400} />
+            </div>
+
+            {/* Правый блок для текстовой информации с возможностью скроллинга */}
+            <div className="flex-1 p-6">
+              <h3 className="text-xl font-bold mb-4">{expandedCard.title}</h3>
+              <p className="mb-2">
+                Прием заявок с: <span className="font-medium">{humanReadableDate(expandedCard.start_date)}</span>
+              </p>
+              <p className="mb-4">
+                Прием заявок до: <span className="font-medium">{humanReadableDate(expandedCard.end_date)}</span>
+              </p>
+              <p className="text-gray-600">{expandedCard.content}</p>
+            </div>
+
+            <button className="absolute top-4 right-4 close-button" onClick={handleCloseCard}>X</button>
+
+          </div>
         </div>
       )}
+
+
+
 
       <div className=" w-full">
         <div className="centered-container">
@@ -152,6 +182,7 @@ export default function Home() {
             <h1 className="centered-text">Твоё резюме начинается здесь</h1>
             <p className="small-text centered-text">Мы постоянно мониторим самые интересные мероприятия и собираем их в одном месте.</p>
             <input
+              className='rounded-2xl'
               type="text"
               placeholder="Поиск..."
               value={search}
@@ -166,17 +197,23 @@ export default function Home() {
             <div
               id={`card-${card.id}`}
               key={card.id}
-              className={`card ${nonSelectedCards.includes(card.id) ? 'hide-card' : ''}`}
+              className={`card flex flex-col relative overflow-hidden rounded-2xl shadow-lg transition-transform transform hover:scale-105 border border-gray-100 ${nonSelectedCards.includes(card.id) ? 'hide-card' : ''}`}
               onClick={() => handleClickCard(card)}
             >
               <Image src={card.image_url} alt={card.title} width={300} height={300} />
-              <h3>{card.title}</h3>
-              <p className="content-text">{card.context}</p> {/* Обновлено: изменил content на context */}
-              <p>Прием заявок с: {humanReadableDate(card.start_date)}</p>
-              <p>Прием заявок до: {humanReadableDate(card.end_date)}</p>
+              <div className='mt-2 rounded-2xl border border-gray-200 bg-gradient-to-r from-blue-500 to-green-500 flex items-center justify-center'>
+                <p className='text-md text-white'>до {humanReadableDate(card.end_date)}</p>
+              </div>
+              <h3 className="break-words mt-2">{card.title}</h3>
+              <p className="break-words text-md text-black fade-out-effect mt-2">{card.context}</p>
+              <div className="w-full flex justify-start mt-2">
+                <button className="text-gray-400 text-md py-2 mt-2 hover:text-gray-600">Подробнее ➜</button>
+              </div>
             </div>
+
           ))}
         </div>
+
 
         <footer className="w-full min-h-screen">
           <FooterBlack />

@@ -16,13 +16,20 @@
   cursor: pointer;
 }
 
+
+
+.fade-out-effect {
+  flex-grow: 1;
+}
+
 .card:hover {
   transform: scale(1.05);
 }
 
 .card h3 {
-  color: hotpink;
-  font-size: 1.5rem;
+  color: black;
+  font-weight: bold;
+  font-size: 1.2rem;
 
   /* ярко-розовый заголовок */
 }
@@ -89,10 +96,10 @@
 
 input[type="text"] {
   margin-top: 20px;
-  border: 2px solid #525375;
+  border: 1px solid #525375;
   width: 100%;
-  padding: 20px;  /* Увеличьте отступ для увеличения высоты */
-  font-size: 26px;  /* Увеличьте размер шрифта */
+  padding: 15px;  /* Увеличьте отступ для увеличения высоты */
+  font-size: 20px;  /* Увеличьте размер шрифта */
   font-weight: bold;  /* Сделайте текст жирным */
   box-sizing: border-box;
 }
@@ -110,8 +117,12 @@ input[type="text"] {
   transition: all 0.4s ease;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
-
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
 
 .expanded-container.showing {
   top: 0;
