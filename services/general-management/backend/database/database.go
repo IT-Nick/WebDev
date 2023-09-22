@@ -143,7 +143,8 @@ func InsertEvent(title, eventContext, content string, startDate, endDate time.Ti
 
 // ListEvents - возвращает все мероприятия
 func ListEvents() ([]Event, error) {
-	rows, err := pool.Query(context.Background(), "SELECT * FROM events")
+	// Явно указываем порядок столбцов для соответствия структуре Event
+	rows, err := pool.Query(context.Background(), "SELECT id, title, context, content, start_date, end_date, image_url FROM events")
 	if err != nil {
 		return nil, err
 	}
