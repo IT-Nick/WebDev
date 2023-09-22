@@ -26,5 +26,5 @@ type Event struct {
 	Content   string    `json:"content"`
 	StartDate time.Time `json:"start_date"`
 	EndDate   time.Time `json:"end_date"`
-	ImageURL  string    `json:"image_url"` // Новое поле
+	ImageURL  string    `json:"image_url"`
 }
