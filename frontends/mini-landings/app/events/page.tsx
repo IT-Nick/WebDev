@@ -46,7 +46,7 @@ export default function Home() {
     // Функция для получения данных с бэкенда
     const fetchData = async () => {
       try {
-        const response = await fetch('https://team.mpei.ru/general-management/api/events/list');
+        const response = await fetch('/general-management/api/events/list');
         const data = await response.json();
         setCards(data);
         console.log("Загруженные данные:", data);  // Для отладки
