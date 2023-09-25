@@ -1,31 +1,29 @@
 .loading-logo {
-    position: relative;
-    top: 2.25em;
-    opacity: 0;
-  }
-  
-  .loaded-logo {
-    position: relative;
-    top: 2.25em;
-    width: 30%;
-    opacity: 1;
-  }
-  
-  .move-up-logo {
-    position: relative;
-    opacity: 0; 
-    transition: opacity 1s ease-in-out;
-  }
-  
-  .move-up-menu {
-    position: relative;
-  }
-  
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
 
-  /* Медиа-запросы */
+.loaded-logo {
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+.blur-bg {
+  backdrop-filter: blur(50px);
+}
+
+.move-up-logo, .move-up-menu {
+  justify-content: space-between;
+  position: relative;
+  transition: top 1s ease-in-out;
+  max-height: 14rem;
+}
+
+/* Медиа-запросы */
 @media (max-width: 1300px) {
-    .container {
-      padding-left: 2.25em;
-      padding-right: 2.25em;
-    }
-}  
+  .container {
+    justify-content: space-between;
+    padding-left: 2.25em;
+    padding-right: 2.25em;
+  }
+}

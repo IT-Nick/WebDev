@@ -55,7 +55,7 @@ main {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin: 0 auto;
+	margin: 0;
 	pointer-events: none;
 }
 
@@ -80,21 +80,6 @@ main {
 	pointer-events: auto;
 }
 
-/* Top Navigation Style */
-.codrops-links {
-	position: relative;
-	display: flex;
-	justify-content: center;
-	margin: 0 1em 0 0;
-	text-align: center;
-	white-space: nowrap;
-}
-
-.codrops-icon {
-	display: inline-block;
-	margin: 0.15em;
-	padding: 0.25em;
-}
 
 .demo-title {
 	color: var(--color-title);
@@ -129,7 +114,7 @@ main {
 	transform: translateY(-100%);
 	pointer-events: none;
 	display: block;
-	margin: 0.25em 0;
+	margin: 0 0;
 	transition: transform 0.3s, opacity 0.3s;
 	transition-timing-function: ease-in;
 }
