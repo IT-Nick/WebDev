@@ -47,7 +47,7 @@ export default function Home() {
     // Функция для получения данных с бэкенда
     const fetchData = async () => {
       try {
-        const response = await fetch('/general-management/api/events/list');
+        const response = await fetch('https://team.mpei.ru/general-management/api/events/list');
         const data = await response.json();
         setCards(data);
         console.log("Загруженные данные:", data);  // Для отладки
@@ -149,32 +149,89 @@ export default function Home() {
 
       {expandedCard && (
         <div className="expanded-container fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
-          <div className="expanded-content flex flex-col md:flex-row bg-white overflow-y-auto w-full max-w-screen-lg h-full md:h-auto">
-
-            {/* Левый блок для изображения */}
-            <div className="flex-none w-full md:w-1/2 h-half">
-              <Image src={expandedCard.image_url} alt={expandedCard.title} layout="responsive" objectFit="cover" width={400} height={400} />
+          <div className="expanded-content bg-white w-full max-h-screen overflow-y-auto">
+            <div className="flex flex-col items-center h-[calc(100vh-8rem)] justify-center space-y-4">
+              <p className="border-2 rounded-full px-4 py-2 border-purple-500 mb-8 mt-8">
+                <span className="font-medium text-purple-500">до {humanReadableDate(expandedCard.end_date)}</span>
+                {expandedCard.registration_url && (
+                  <a href={expandedCard.registration_url} target="_blank" rel="noopener noreferrer" className="ml-2 inline-block bg-indigo-500 text-white px-4 py-2 rounded-3xl hover:bg-purple-500 hover:text-white">
+                    Принять участие
+                  </a>
+                )}
+              </p>
+              <h3 className="gradient-text text-5xl md:text-6xl font-bold pb-2 text-center mb-8">{expandedCard.title}</h3>
+              <p className="text-gray-600 font-bold text-2xl text-center pt-8">
+                {expandedCard.context}
+              </p>
             </div>
+            <div className="text-gray-600 p-6 md:w-2/3 mx-auto my-2 text-2xl ffont-semibold text-justify">
+              {expandedCard.content.split(/(?<=[.!?])\s/).map((sentence, index) => {
+                const trimmedSentence = sentence.trim();
 
-            {/* Правый блок для текстовой информации с возможностью скроллинга */}
-            <div className="flex-1 p-6">
-              <h3 className="text-xl font-bold mb-4">{expandedCard.title}</h3>
-              <p className="mb-2">
-                Прием заявок с: <span className="font-medium">{humanReadableDate(expandedCard.start_date)}</span>
-              </p>
-              <p className="mb-4">
-                Прием заявок до: <span className="font-medium">{humanReadableDate(expandedCard.end_date)}</span>
-              </p>
-              <p className="text-gray-600">{expandedCard.content}</p>
+                // Проверяем, содержит ли предложение двоеточие и затем хотя бы две точки с запятой
+                const regex = /(.*?):(.*?[;.]$)/;
+                const match = trimmedSentence.match(regex);
+
+                // Для стиля первого слова
+                const [firstWord, ...restOfSentence] = trimmedSentence.split(' ');
+
+                if (index === 0) {
+                  if (match) {
+                    const intro = match[1];
+                    const items = match[2].split(/[;.] /).map(item => item.trim()).filter(item => item);
+
+                    return (
+                      <div key={index} className="mb-4 pl-4 border-2 border-purple-600 p-2 rounded-full">
+                        <p>
+                          <span className="gradient-text">{firstWord}</span> {restOfSentence.join(' ')}
+                        </p>
+                        <p className="gradient-text">{intro}:</p>
+                        <ul className="pl-4 list-disc">
+                          {items.map((item, itemIndex) => (
+                            <li key={itemIndex}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  }
+                  return <p key={index} className="mb-4 pl-4"><span className="gradient-text text-4xl">{firstWord}</span> {restOfSentence.join(' ')}</p>;
+                } else {
+                  if (match) {
+                    const intro = match[1];
+                    const items = match[2].split(/[;.] /).map(item => item.trim()).filter(item => item);
+
+                    return (
+                      <div key={index} className="mb-16 mt-16 pl-4 border-2 border-purple-600 p-2 rounded-3xl">
+                        <p className="gradient-text">{intro}:</p>
+                        <ul className="pl-4 list-disc">
+                          {items.map((item, itemIndex) => (
+                            <li key={itemIndex}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  }
+
+                  return <p key={index} className="mb-4 pl-4">{trimmedSentence}</p>;
+                }
+              })}
               {expandedCard.registration_url && (
-                <a href={expandedCard.registration_url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block bg-indigo-500 text-white px-4 py-2 rounded-xl hover:bg-purple-500">
+                <a href={expandedCard.registration_url} target="_blank" rel="noopener noreferrer" className="ml-2 pb-4 pt-4 mt-8 w-full text-center inline-block border-2 border-purple-500 text-purple-500 px-6 py-2 rounded-full hover:bg-purple-500 hover:text-white">
                   Принять участие
                 </a>
               )}
             </div>
 
-            <button className="absolute top-4 right-4 close-button" onClick={handleCloseCard}>x</button>
-
+            <div>
+              <Image
+                src="/assets/x.svg"
+                alt="x"
+                width={25}
+                height={25}
+                className="absolute top-4 right-4 close-button mr-4 mt-4"
+                onClick={handleCloseCard}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -182,10 +239,12 @@ export default function Home() {
 
 
 
+
+
       <div className="">
         <div className="centered-container">
           <div>
-            <h1 className="centered-text">Твоё резюме начинается здесь</h1>
+            <h1 className="centered-text gradient-text">Твоё резюме начинается здесь</h1>
             {/* <p className="small-text centered-text">Мы постоянно мониторим самые интересные мероприятия и собираем их в одном месте.</p> */}
             <input
               className='rounded-2xl'

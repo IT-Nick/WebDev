@@ -17,6 +17,13 @@
 }
 
 
+.gradient-text {
+  background-image: linear-gradient(to right, #3B82F6, #9333EA, #EC4899, #F97316, #FBBF24); /* Это соответствует цветам: blue-500, purple-500, pink-500, orange-500, yellow-500 в Tailwind */
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text; /* Для поддержки в Safari */
+}
+
 
 .fade-out-effect {
   flex-grow: 1;
@@ -73,9 +80,6 @@
 
 
 .centered-text {
-  background: linear-gradient(90deg, #f87171, #2563eb);
-  background-clip: text;
-  color: transparent;
   /* делаем текст белым */
   text-align: center;
 }
