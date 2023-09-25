@@ -42,7 +42,7 @@ export default function Home() {
     }
 
     try {
-      const response = await fetch('/api/submitAnswers', {
+      const response = await fetch('/general-management/api/submitAnswers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
