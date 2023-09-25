@@ -63,6 +63,7 @@ const AddEventForm: React.FC = () => {
                     value={eventData.title}
                     onChange={handleInputChange}
                     className="border p-2 mb-4 rounded-xl"
+                    maxLength={53}
                 />
                 <input
                     type="text"
@@ -71,6 +72,7 @@ const AddEventForm: React.FC = () => {
                     value={eventData.context}
                     onChange={handleInputChange}
                     className="border p-2 mb-4 rounded-xl"
+                    maxLength={84}
                 />
                 <input
                     type="text"

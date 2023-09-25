@@ -6,7 +6,6 @@ import FooterBlack from '@/components/Root/FooterBlack';
 import { useLoading } from '@/components/Providers/LoadingProvider';
 import DateSlider from '@/components/shared/events/DateSlider';
 import Image from 'next/image';
-
 interface Card {
   id: number;
   title: string;
@@ -15,7 +14,9 @@ interface Card {
   start_date: string;
   end_date: string;
   image_url: string;
+  registration_url: string;
 }
+
 
 
 
@@ -165,6 +166,11 @@ export default function Home() {
                 Прием заявок до: <span className="font-medium">{humanReadableDate(expandedCard.end_date)}</span>
               </p>
               <p className="text-gray-600">{expandedCard.content}</p>
+              {expandedCard.registration_url && (
+                <a href={expandedCard.registration_url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block bg-indigo-500 text-white px-4 py-2 rounded-xl hover:bg-purple-500">
+                  Принять участие
+                </a>
+              )}
             </div>
 
             <button className="absolute top-4 right-4 close-button" onClick={handleCloseCard}>x</button>
