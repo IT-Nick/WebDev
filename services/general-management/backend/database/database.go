@@ -134,17 +134,17 @@ func GetPasswordHashByUsername(username string) (string, error) {
 }
 
 // InsertEvent - вставляет новое мероприятие в таблицу
-func InsertEvent(title, eventContext, content string, startDate, endDate time.Time, imageURL string) error {
+func InsertEvent(title, eventContext, content string, startDate, endDate time.Time, imageURL, registrationURL string) error {
 	_, err := pool.Exec(context.Background(),
-		"INSERT INTO events (title, context, content, start_date, end_date, image_url) VALUES ($1, $2, $3, $4, $5, $6)",
-		title, eventContext, content, startDate, endDate, imageURL)
+		"INSERT INTO events (title, context, content, start_date, end_date, image_url, registration_url) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+		title, eventContext, content, startDate, endDate, imageURL, registrationURL) // добавлен параметр registrationURL
 	return err
 }
 
 // ListEvents - возвращает все мероприятия
 func ListEvents() ([]Event, error) {
 	// Явно указываем порядок столбцов для соответствия структуре Event
-	rows, err := pool.Query(context.Background(), "SELECT id, title, context, content, start_date, end_date, image_url FROM events")
+	rows, err := pool.Query(context.Background(), "SELECT id, title, context, content, start_date, end_date, image_url, registration_url FROM events")
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +153,7 @@ func ListEvents() ([]Event, error) {
 	var events []Event
 	for rows.Next() {
 		var event Event
-		err := rows.Scan(&event.ID, &event.Title, &event.Context, &event.Content, &event.StartDate, &event.EndDate, &event.ImageURL)
+		err := rows.Scan(&event.ID, &event.Title, &event.Context, &event.Content, &event.StartDate, &event.EndDate, &event.ImageURL, &event.RegistrationURL) // добавлен параметр &event.RegistrationURL
 		if err != nil {
 			return nil, err
 		}

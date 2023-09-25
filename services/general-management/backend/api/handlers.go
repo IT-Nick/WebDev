@@ -176,8 +176,7 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Добавлен параметр e.ImageURL
-	if err := database.InsertEvent(e.Title, e.Context, e.Content, e.StartDate, e.EndDate, e.ImageURL); err != nil {
+	if err := database.InsertEvent(e.Title, e.Context, e.Content, e.StartDate, e.EndDate, e.ImageURL, e.RegistrationURL); err != nil { // добавлен параметр e.RegistrationURL
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
