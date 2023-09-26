@@ -63,7 +63,7 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Вернуть URL к файлу в ответе
-	fileURL := fmt.Sprintf("/general-management/%s", filePath)
+	fileURL := fmt.Sprintf("https://team.mpei.ru/general-management/%s", filePath)
 	w.Write([]byte(fileURL))
 }
 
