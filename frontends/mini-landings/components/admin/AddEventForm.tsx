@@ -138,7 +138,7 @@ const AddEventForm: React.FC = () => {
                 />
                 <input
                     type="text"
-                    name="registrationUrl"
+                    name="registration_url"
                     placeholder="Ссылка для регистрации"
                     value={eventData.registration_url}
                     onChange={handleInputChange}

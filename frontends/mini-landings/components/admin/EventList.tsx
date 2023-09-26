@@ -5,8 +5,8 @@ interface Event {
     title: string;
     context: string;
     content: string;
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
     imageURL: string;
     registrationURL: string;
 }
@@ -77,8 +77,8 @@ const EventList: React.FC = () => {
                     <div className="bg-white p-8 rounded-lg w-1/2">
                         <h2 className="text-2xl font-bold mb-4">{modalData.title}</h2>
                         <p>Описание: {modalData.content}</p>
-                        <p>Дата начала: {new Date(modalData.startDate).toLocaleDateString()}</p>
-                        <p>Дата окончания: {new Date(modalData.endDate).toLocaleDateString()}</p>
+                        <p>Дата начала: {modalData.startDate}</p>
+                        <p>Дата окончания: {modalData.endDate}</p>
                         <button
                             className="mt-4 bg-red-500 text-white px-4 py-1 rounded-full"
                             onClick={() => setModalData(null)}

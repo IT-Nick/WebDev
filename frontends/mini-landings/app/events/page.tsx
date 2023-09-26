@@ -45,7 +45,7 @@ export default function Home() {
 
 
   const handleImageClick = () => {
-    setSearch("От идеи к прототипу");
+    setSearch("CASE-IN");
   };
 
   const [expandedCard, setExpandedCard] = useState<Card | null>(null);
