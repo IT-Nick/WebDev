@@ -33,7 +33,7 @@ export default function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 h-16 mt-4 ml-4 mr-4 pt-2"
     >
       <div className="container flex items-center justify-between">
-        <div className={`${scrolling ? 'move-up-logo flex-shrink-0 absolute top-0 left-0 mt-4' : 'flex-shrink-0 absolute top-0 left-0 mt-4'} d-flex align-items-center justify-content-center`} style={{ width: '60px', height: '60px' }}>
+        <div className={`${scrolling ? 'flex-shrink-0 absolute top-0 left-0 mt-4' : 'flex-shrink-0 absolute top-0 left-0 mt-4'} d-flex align-items-center justify-content-center`} style={{ width: '60px', height: '60px' }}>
           <Link href="/">
             {/* Белый круг на фоне */}
             <svg width="60" height="60" style={{ position: 'absolute', zIndex: 1, transform: 'translateY(-10px)' }}>
@@ -54,7 +54,7 @@ export default function Navbar() {
 
 
 
-        <div className={`${scrolling ? 'move-up-menu flex-shrink-0 absolute top-0 right-0' : 'flex-shrink-0 absolute top-0 right-0'}`}>
+        <div className={`${scrolling ? 'flex-shrink-0 absolute top-0 right-0' : 'flex-shrink-0 absolute top-0 right-0'}`}>
           <Menu />
         </div>
       </div>

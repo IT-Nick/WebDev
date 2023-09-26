@@ -5,7 +5,10 @@ import Loader from '@/components/shared/Loader/Loader';
 import FooterBlack from '@/components/Root/FooterBlack';
 import { useLoading } from '@/components/Providers/LoadingProvider';
 import DateSlider from '@/components/shared/events/DateSlider';
+
 import Image from 'next/image';
+
+
 interface Card {
   id: number;
   title: string;
@@ -16,6 +19,7 @@ interface Card {
   image_url: string;
   registration_url: string;
 }
+
 
 
 
@@ -40,6 +44,9 @@ export default function Home() {
   };
 
 
+  const handleImageClick = () => {
+    setSearch("От идеи к прототипу");
+  };
 
   const [expandedCard, setExpandedCard] = useState<Card | null>(null);
 
@@ -236,15 +243,28 @@ export default function Home() {
         </div>
       )}
 
-
-
-
-
-
       <div className="">
-        <div className="centered-container">
+        <div className="centered-container relative">
+          <div className="background-svg absolute left-0 top-0 transform translate-y-[-100%] -translate-x-4">
+            <Image
+              onClick={handleImageClick}
+              className="transition-transform hover:scale-105 cursor-pointer"
+              src="/assets/stepanus.svg"
+              alt=""
+              width={300}
+              height={300}
+              layout="fixed"
+            />
+
+
+
+
+          </div>
+
           <div>
-            <h1 className="centered-text gradient-text">Твоё резюме начинается здесь</h1>
+            <h1 className="centered-text gradient-text-clip" data-text="Твоё резюме начинается здесь">
+              Твоё резюме начинается здесь
+            </h1>
             {/* <p className="small-text centered-text">Мы постоянно мониторим самые интересные мероприятия и собираем их в одном месте.</p> */}
             <input
               className='rounded-2xl'
@@ -283,7 +303,7 @@ export default function Home() {
         <footer className="w-full min-h-screen">
           <FooterBlack />
         </footer>
-      </div>
+      </div >
     </>
   );
 }

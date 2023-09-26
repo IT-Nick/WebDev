@@ -18,12 +18,35 @@
 
 
 .gradient-text {
-  background-image: linear-gradient(to right, #3B82F6, #9333EA, #EC4899, #F97316, #FBBF24); /* Это соответствует цветам: blue-500, purple-500, pink-500, orange-500, yellow-500 в Tailwind */
+  background-image: linear-gradient(to right, #3B82F6, #9333EA, #EC4899, #F97316, #FBBF24);
+  /* Это соответствует цветам: blue-500, purple-500, pink-500, orange-500, yellow-500 в Tailwind */
   background-clip: text;
   color: transparent;
-  -webkit-background-clip: text; /* Для поддержки в Safari */
+  -webkit-background-clip: text;
+  /* Для поддержки в Safari */
 }
 
+.gradient-text-clip {
+  position: relative;
+  background-image: linear-gradient(to right, #FBBF24, #F97316, #EC4899, #9333EA, #3B82F6);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.gradient-text-clip::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  color: transparent;
+  background-image: linear-gradient(to right, #FBBF24, #F97316, #EC4899, #9333EA, #3B82F6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 6px white;
+  /* Здесь задается толщина обводки */
+}
 
 .fade-out-effect {
   flex-grow: 1;
@@ -61,7 +84,8 @@
 
 
 .centered-container {
-  flex-direction: row; /* сделаем флекс-контейнер горизонтальным */
+  flex-direction: row;
+  /* сделаем флекс-контейнер горизонтальным */
   flex-wrap: wrap;
   justify-content: space-between;
   display: flex;
@@ -69,8 +93,10 @@
   align-items: center;
   justify-content: center;
   margin-top: calc(100vh / 3);
-  padding-left: 20px;  /* отступ слева */
-  padding-right: 20px;  /* отступ справа */
+  padding-left: 20px;
+  /* отступ слева */
+  padding-right: 20px;
+  /* отступ справа */
 }
 
 .filters {
@@ -102,12 +128,19 @@ input[type="text"] {
   margin-top: 20px;
   border: 1px solid #525375;
   width: 100%;
-  padding: 15px;  /* Увеличьте отступ для увеличения высоты */
-  font-size: 20px;  /* Увеличьте размер шрифта */
-  font-weight: bold;  /* Сделайте текст жирным */
+  padding: 15px;
+  /* Увеличьте отступ для увеличения высоты */
+  font-size: 20px;
+  /* Увеличьте размер шрифта */
+  font-weight: bold;
+  /* Сделайте текст жирным */
   box-sizing: border-box;
 }
 
+input[type="text"]::placeholder {
+  color: #525375;
+  opacity: 1; /* Firefox */
+}
 
 .expanded-container {
   position: fixed;
@@ -121,12 +154,12 @@ input[type="text"] {
   transition: all 0.4s ease;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 
 .expanded-container.showing {
   top: 0;
@@ -147,6 +180,41 @@ input[type="text"] {
 }
 
 
+@keyframes moveAndTilt {
+  0% {
+    transform: translateX(-5px) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateX(5px) rotate(2deg);
+  }
+
+  100% {
+    transform: translateX(-5px) rotate(-2deg);
+  }
+}
+
+.background-svg {
+  position: absolute;
+  top: -70%;
+  left: 10%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  animation: moveAndTilt 5s infinite;
+}
+
+
+/* Медиазапрос для маленьких экранов (например, для экранов шириной меньше 768px) */
+@media (max-width: 768px) {
+  .background-svg {
+    top: -110%;
+    left: 18%;
+    transform: translate(-50%, -150%);
+    /* Чтобы SVG оказался над текстом */
+  }
+}
+
+
 /* Медиа-запрос для экранов с шириной менее 700px */
 @media (max-width: 700px) {
 
@@ -156,6 +224,7 @@ input[type="text"] {
     font-weight: bold;
     /* жирный текст */
   }
+
   .small-text {
     color: #525375;
     /* делаем текст белым */
@@ -163,4 +232,5 @@ input[type="text"] {
     /* установка размера шрифта чуть меньше */
   }
 }
+
 
