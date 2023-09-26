@@ -1,9 +1,11 @@
 package api
 
 import (
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"github.com/IT-Nick/WebDev/services/general-management/backend/database"
 	"github.com/dgrijalva/jwt-go"
 	"io"
@@ -32,8 +34,18 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
+	// Проверяем, существует ли каталог uploads, и если его нет, создаем
+	uploadsPath := "uploads"
+	if _, err := os.Stat(uploadsPath); os.IsNotExist(err) {
+		os.MkdirAll(uploadsPath, 0755)
+	}
+
+	// Генерация уникального имени файла
+	fileExtension := filepath.Ext(header.Filename)
+	uniqueName := generateUniqueFileName() + fileExtension
+
 	// Определите путь для сохранения файла
-	filePath := filepath.Join("uploads", header.Filename)
+	filePath := filepath.Join(uploadsPath, uniqueName)
 	newFile, err := os.Create(filePath)
 	if err != nil {
 		http.Error(w, "Error creating the file", http.StatusInternalServerError)
@@ -48,8 +60,19 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Вернуть путь к файлу в ответе
-	w.Write([]byte(filePath))
+	// Вернуть URL к файлу в ответе
+	fileURL := fmt.Sprintf("/general-management/%s", filePath)
+	w.Write([]byte(fileURL))
+}
+
+// Функция для генерации уникального имени файла
+func generateUniqueFileName() string {
+	buf := make([]byte, 16)
+	if _, err := rand.Read(buf); err != nil {
+		panic(err)
+	}
+
+	return hex.EncodeToString(buf)
 }
 
 // AuthUserHandler handles user authentication and returns a JWT token
