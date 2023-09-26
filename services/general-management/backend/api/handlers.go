@@ -1,6 +1,8 @@
 package api
 
 import (
+	"archive/zip"
+	"bytes"
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
@@ -63,6 +65,57 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	// Вернуть URL к файлу в ответе
 	fileURL := fmt.Sprintf("/general-management/%s", filePath)
 	w.Write([]byte(fileURL))
+}
+
+func DownloadUploadsAsZip(w http.ResponseWriter, r *http.Request) {
+	// Создаем новый zip-архив в памяти
+	buf := new(bytes.Buffer)
+	zipWriter := zip.NewWriter(buf)
+
+	// Обходим все файлы в директории uploads
+	err := filepath.Walk("uploads", func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Пропустить корневую директорию
+		if path == "uploads" {
+			return nil
+		}
+
+		// Открыть файл
+		fileToZip, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer fileToZip.Close()
+
+		// Добавляем файл в zip-архив
+		w, err := zipWriter.Create(path)
+		if err != nil {
+			return err
+		}
+		_, err = io.Copy(w, fileToZip)
+		return err
+	})
+	if err != nil {
+		http.Error(w, "Error zipping the files", http.StatusInternalServerError)
+		return
+	}
+
+	// Закрыть zip-архив
+	err = zipWriter.Close()
+	if err != nil {
+		http.Error(w, "Error closing the zip", http.StatusInternalServerError)
+		return
+	}
+
+	// Установка необходимых заголовков для скачивания файла
+	w.Header().Set("Content-Type", "application/zip")
+	w.Header().Set("Content-Disposition", "attachment; filename=uploads.zip")
+
+	// Отправляем zip в ответ
+	w.Write(buf.Bytes())
 }
 
 // Функция для генерации уникального имени файла

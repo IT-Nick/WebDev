@@ -60,5 +60,11 @@ func NewRouter() *mux.Router {
 	// Добавляет изображение
 	router.HandleFunc("/api/upload/image", UploadFileHandler).Methods("POST")
 
+	// Получить изображение
+	router.PathPrefix("/uploads/").Handler(http.StripPrefix("/uploads/", http.FileServer(http.Dir("uploads"))))
+
+	// Скачать все изображения
+	router.HandleFunc("/api/download/uploads", DownloadUploadsAsZip).Methods("GET")
+
 	return router
 }
