@@ -14,6 +14,33 @@ const AddEventForm: React.FC = () => {
         registration_url: ''
     });
 
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/general-management/api/upload/image', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const imagePath = await response.text();
+                    setEventData(prevData => ({
+                        ...prevData,
+                        image_url: imagePath
+                    }));
+                } else {
+                    console.error('Error uploading the image:', await response.text());
+                }
+            } catch (error) {
+                console.error('There was an error uploading the image:', error);
+            }
+        }
+    };
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setEventData(prevData => ({
@@ -128,6 +155,16 @@ const AddEventForm: React.FC = () => {
                     onChange={handleInputChange}
                     className="block w-full border p-2 mb-4 rounded-xl"
                 />
+                <label className="block w-full border p-2 mb-4 rounded-xl cursor-pointer bg-gray-200 text-center">
+                    Загрузить изображение
+                    <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={handleImageUpload}
+                    />
+                </label>
+
                 <input
                     type="text"
                     name="image_url"
