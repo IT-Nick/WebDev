@@ -6,10 +6,51 @@ import (
 	"encoding/json"
 	"github.com/IT-Nick/WebDev/services/general-management/backend/database"
 	"github.com/dgrijalva/jwt-go"
+	"io"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 )
+
+func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
+	// Проверьте метод запроса
+	if r.Method != http.MethodPost {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// 10 << 20 - это 10MB
+	r.ParseMultipartForm(10 << 20)
+
+	// Получите загруженный файл
+	file, header, err := r.FormFile("file")
+	if err != nil {
+		http.Error(w, "Error retrieving the file", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	// Определите путь для сохранения файла
+	filePath := filepath.Join("uploads", header.Filename)
+	newFile, err := os.Create(filePath)
+	if err != nil {
+		http.Error(w, "Error creating the file", http.StatusInternalServerError)
+		return
+	}
+	defer newFile.Close()
+
+	// Копирование файла
+	_, err = io.Copy(newFile, file)
+	if err != nil {
+		http.Error(w, "Error copying the file", http.StatusInternalServerError)
+		return
+	}
+
+	// Вернуть путь к файлу в ответе
+	w.Write([]byte(filePath))
+}
 
 // AuthUserHandler handles user authentication and returns a JWT token
 func AuthUserHandler(w http.ResponseWriter, r *http.Request) {

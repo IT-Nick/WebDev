@@ -57,5 +57,8 @@ func NewRouter() *mux.Router {
 	// Возвращает список всех одобренных пользователей из таблицы auth. (Новый)
 	router.HandleFunc("/api/users/list", ListAuthUsersHandler).Methods("GET")
 
+	// Добавляет изображение
+	router.HandleFunc("/api/upload/image", UploadFileHandler).Methods("POST")
+
 	return router
 }
