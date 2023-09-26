@@ -4,6 +4,7 @@ import Loader from '@/components/shared/Loader/Loader';
 import { useLoading } from '@/components/Providers/LoadingProvider';
 import UserApprovalList from '@/components/admin/UserApprovalList';
 import AddEventForm from '@/components/admin/AddEventForm';
+import EventList from '@/components/admin/EventList';
 
 // Главный компонент AdminPanel
 const AdminPanel: React.FC = () => {
@@ -30,6 +31,9 @@ const AdminPanel: React.FC = () => {
         </div>
         <div>
           <AddEventForm />
+        </div>
+        <div>
+          <EventList />
         </div>
       </div>
     </div>

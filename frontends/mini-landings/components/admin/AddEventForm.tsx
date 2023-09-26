@@ -2,6 +2,8 @@ import React from 'react';
 
 // Компонент для добавления мероприятия
 const AddEventForm: React.FC = () => {
+    const [isAdded, setIsAdded] = React.useState(false);
+
     const [eventData, setEventData] = React.useState({
         title: '',
         context: '',
@@ -9,7 +11,7 @@ const AddEventForm: React.FC = () => {
         start_date: '',
         end_date: '',
         image_url: '',
-        registrationUrl: ''
+        registration_url: ''
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -36,7 +38,7 @@ const AddEventForm: React.FC = () => {
             const dataToSend = {
                 ...eventData,
                 start_date: convertToRFC3339(eventData.start_date),
-                end_date: convertToRFC3339(eventData.end_date)
+                end_date: convertToRFC3339(eventData.end_date),
             };
 
             console.log("Sending data to server:", dataToSend);  // Вывод в консоль
@@ -51,17 +53,38 @@ const AddEventForm: React.FC = () => {
 
             if (response.status === 201) {
                 console.log("Event successfully created!");
+
+                // Сброс данных формы и установка статуса успешного добавления
+                setEventData({
+                    title: '',
+                    context: '',
+                    content: '',
+                    start_date: '',
+                    end_date: '',
+                    image_url: '',
+                    registration_url: ''
+                });
+                setIsAdded(true);
+
             } else {
+                // Сброс статуса успешного добавления
+                setIsAdded(false);
+
                 console.error("Failed to create event.", await response.text());
             }
         } catch (error) {
+            // Сброс статуса успешного добавления
+            setIsAdded(false);
+
             console.error("There was an error:", error);
         }
     };
 
+
     return (
         <div className="max-w-lg mx-auto">
             <h1 className="text-2xl font-bold mb-4">Добавить мероприятие</h1>
+            {isAdded && <div className="text-green-500 mb-4">Добавлено!</div>}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -117,7 +140,7 @@ const AddEventForm: React.FC = () => {
                     type="text"
                     name="registrationUrl"
                     placeholder="Ссылка для регистрации"
-                    value={eventData.registrationUrl}
+                    value={eventData.registration_url}
                     onChange={handleInputChange}
                     className="block w-full border p-2 mb-4 rounded-xl"
                 />
